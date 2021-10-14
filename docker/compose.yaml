@@ -1,0 +1,16 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ../www:/var/www/html
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ioc
+    volumes:
+      - mysqldb:/var/lib/mysql
+volumes:
+  mysqldb:
