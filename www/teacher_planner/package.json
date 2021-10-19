@@ -1,0 +1,19 @@
+{
+  "name": "teacherplanner",
+  "version": "1.0.0",
+  "description": "Web App per generar horaris escolars automàticament",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/m12grup6/teacherplanner.git"
+  },
+  "author": "Jaume Ferrete Vazquez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m12grup6/teacherplanner/issues"
+  },
+  "homepage": "https://github.com/m12grup6/teacherplanner#readme"
+}
