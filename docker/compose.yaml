@@ -5,11 +5,12 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ../www:/var/www/html
+      - ../www/teacher_planner:/var/www/html
+      - ./000-default.conf:/etc/apache2/sites-enabled/000-default.conf
   database:
     image: mysql:5.7
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ioc
     volumes:
