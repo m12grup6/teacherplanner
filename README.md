@@ -1,6 +1,6 @@
 <img src="./images/logo.sample.png" alt="Logo of the project" align="right">
 
-# Teacher Planner &middot
+# Teacher Planner
 > Additional information or tag line
 
 A brief description of your project, what it is used for.
