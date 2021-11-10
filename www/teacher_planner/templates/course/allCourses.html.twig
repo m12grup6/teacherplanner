@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Assignatures{% endblock %}
+{% block title %}Cursos{% endblock %}
 {% block body %}
-    {{ dump(allCourses) }}
     <table>
         {% for course in allCourses %}
             <tr>
