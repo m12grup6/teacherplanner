@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Assignatures{% endblock %}
+{% block body %}
+    {{ dump(allCourses) }}
+    <table>
+        {% for course in allCourses %}
+            <tr>
+                <td>{{ course.id }}</td>
+                <td>{{ course.name }}</td>
+                <td>{{ course.cicle }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>No hay resultados.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

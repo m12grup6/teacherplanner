@@ -47,4 +47,17 @@ class SubjectRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findBySubjectsByCourseId($id){
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT subject
+            FROM App\Entity\Subject s
+            WHERE course_id = :id'
+        )->setParameter('id', $id);
+
+        // returns an array of subjects objects
+        return $query->getResult();
+    }
 }

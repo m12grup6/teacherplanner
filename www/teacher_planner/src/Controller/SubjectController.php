@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class SubjectController extends AbstractController
 {   
     /**
-    * @Route("/add/subject", name="app_subject")
+    * @Route("/subjects/add", name="app_subject")
     */
     public function addSubject(Request $request){
         $subject = new Subject();
@@ -45,7 +45,7 @@ class SubjectController extends AbstractController
     }
 
     /**
-    * @Route("/get/subjects", name="app_getSubjects")
+    * @Route("/subjects", name="app_getSubjects")
     */
     public function showSubject(Request $request){
         $entityManager = $this->getDoctrine()->getManager();
@@ -56,7 +56,7 @@ class SubjectController extends AbstractController
     }
 
     /**
-    * @Route("/delete/subject/{id}", name="app_deleteSubjects")
+    * @Route("/subjects/delete/{id}", name="app_deleteSubjects")
     */
     public function deleteSubject($id){
         $entityManager = $this->getDoctrine()->getManager();
@@ -74,19 +74,27 @@ class SubjectController extends AbstractController
         return $this->redirectToRoute('app_subject', ['id' => $subject->getId()]);
     }
 
+     /**
+    * @Route("/subjects/update/{id}", name="app_updateSubjects")
+    */
 
-    /*public function updateSubject($id){
+    public function updateSubject(Request $request, $id){
         $entityManager = $this->getDoctrine()->getManager();
-        $subject = $entityManager->getRepository(Subject::class)->findId($id);
-        if (!subject) {
-            throw $this->createNotFoundException("L'assignatura amb ID " .$id " no existeix");
+        $subject = $entityManager->getRepository(Subject::class)->find($id);
+        if (!$subject) {
+            throw $this->createNotFoundException(
+                'No existeix cap assignatura amb id '.$id
+            );
         }
 
-        $subject->setName($form['name']->getData());
-        $subject->setCourseId($form['course_id']->getData());
-        $subject->setHoursWeek($form['hours_week']->getData());
+        $subject->setName($request['name']->getData());
+        $subject->setCourseId($request['course_id']->getData());
+        $subject->setHoursWeek($request['hours_week']->getData());
 
-    }*/
+        return $this->redirectToRoute('app_getSubjects', [
+            'id' => $subject->getId()
+        ]);
+    }
 
 
 
