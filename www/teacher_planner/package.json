@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/m12grup6/teacherplanner#readme",
   "devDependencies": {
-    "@symfony/webpack-encore": "^1.6.1"
+    "@symfony/webpack-encore": "^1.6.1",
+    "bootstrap": "^5.1.3"
   }
 }
