@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Assignatura{% endblock %}
+{% block body %}
+    <h2>Curs {{ subject.name }}</h2>
+        <li>
+            Cicle: {{ subject.courseId }}
+            Hores per setmana: {{ subject.hoursWeek }}
+        </li>
+{% endblock %}
