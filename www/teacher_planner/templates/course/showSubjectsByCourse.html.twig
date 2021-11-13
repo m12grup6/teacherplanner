@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Assignatures per Curs{% endblock %}
+{% block body %}
+    <table>
+        {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>No hay resultados.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

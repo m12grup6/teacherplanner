@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Assignatures{% endblock %}
+{% block body %}
+    <table>
+        {% for subject in allSubjects %}
+            <tr>
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.courseId }}</td>
+                <td>{{ subject.hoursWeek }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>No hay resultados.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
