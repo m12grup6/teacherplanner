@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use App\Entity\Subject;
 use App\Entity\Course;
 use App\Form\CourseType;
 use App\Repository\CourseRepository;
@@ -63,7 +64,7 @@ class CourseController extends AbstractController
         $allCourses = $entityManager->getRepository(Course::class)->findAll();
         return $this->render('course/allCourses.html.twig', [
             'allCourses' => $allCourses,
-        ]);  
+        ]);
     }
 
     /**
@@ -113,12 +114,15 @@ class CourseController extends AbstractController
 
 
     /**
-    * @Route("/showsubjects/{id}", name="app_subjectByCourse")
+    * @Route("/{id}/showsubjects", name="app_subjectByCourse")
     */
     public function showSubjectsByCourse($id){
         $subjects = $this->getDoctrine()
-        ->getRepository(Course::class)
+        ->getRepository(Subject::class)
         ->findBySubjectsByCourseId($id);
+        return $this->render('course/showSubjectsByCourse.html.twig', [
+            'subjects' => $subjects,
+        ]);
     }
 
 }
