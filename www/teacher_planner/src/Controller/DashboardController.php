@@ -17,4 +17,12 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
         ]);
     }
+
+    /**
+     * @Route("/", name="homepage")
+     */
+    public function homepage(): Response
+    {
+        return $this->redirectToRoute('app_login');
+    }
 }
