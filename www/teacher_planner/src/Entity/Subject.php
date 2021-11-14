@@ -27,14 +27,32 @@ class Subject
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
-     */
-    private $course_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\Positive
      */
     private $hours_week;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Course", inversedBy="subjects")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $course;
+
+    /**
+     * @return mixed
+     */
+
+    public function getCourse()
+    {
+        return $this->course;
+    }
+
+    /**
+     * @param mixed $course
+     */
+    public function setCourse($course): void
+    {
+        $this->course = $course;
+    }
 
     public function getId(): ?int
     {
@@ -52,19 +70,7 @@ class Subject
 
         return $this;
     }
-
-    public function getCourseId(): ?int
-    {
-        return $this->course_id;
-    }
-
-    public function setCourseId(int $course_id): self
-    {
-        $this->course_id = $course_id;
-
-        return $this;
-    }
-
+    
     public function getHoursWeek(): ?int
     {
         return $this->hours_week;

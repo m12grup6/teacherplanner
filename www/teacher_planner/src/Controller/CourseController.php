@@ -29,6 +29,8 @@ class CourseController extends AbstractController
 
     /**
     * @Route("/add", name="app_course")
+    * Mètode per afegir un curs i grabar-lo a la BBDD.
+    * @param request $request informació del formulari per tal d'afegir el curs.
     */
     public function addCourse(Request $request){
         $course = new course();
@@ -58,8 +60,9 @@ class CourseController extends AbstractController
 
     /**
     * @Route("/", name="app_getCourses")
+    * Mètode per llistar tots els cursos donats d'alta.
     */
-    public function showCourse(){
+    public function showCourses(){
         $entityManager = $this->getDoctrine()->getManager();
         $allCourses = $entityManager->getRepository(Course::class)->findAll();
         return $this->render('course/allCourses.html.twig', [
@@ -69,6 +72,8 @@ class CourseController extends AbstractController
 
     /**
     * @Route("/delete/{id}", name="app_deleteCourses")
+    * Mètode per borrar el curs passat per paràmetre
+    * @param Integer $id id del curs a borrar.
     */
     public function deleteCourse($id){
         $entityManager = $this->getDoctrine()->getManager();
@@ -88,6 +93,8 @@ class CourseController extends AbstractController
 
     /**
     * @Route("/edit/{id}", name="app_editCourses")
+    * Mètode per editar el curs per paràmetre
+    * @param Integer $id id del curs a editar.
     */
 
     public function updateCourse(Course $course, Request $request): Response{
@@ -105,6 +112,8 @@ class CourseController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_detailCourses")
+     * Mètode per mostrar el detall d'un curs. Mostra el valor dels seus atributs.
+     * @param Course $course objecte subject amb les dades de l'assignatura.
      */
     public function detail(Course $course): Response
     {
@@ -115,6 +124,8 @@ class CourseController extends AbstractController
 
     /**
     * @Route("/{id}/showsubjects", name="app_subjectByCourse")
+    * Mètode que retorna les assignatures associades a un curs. 
+    * @param Integer $id id del curs del qual es vol obtenir el llistat d'assignatures que pengen d'ell.
     */
     public function showSubjectsByCourse($id){
         $subjects = $this->getDoctrine()
