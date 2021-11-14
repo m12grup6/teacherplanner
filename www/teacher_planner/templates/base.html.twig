@@ -10,6 +10,41 @@
 
     </head>
     <body>
+
+    <nav class="navbar navbar-light navbar-expand-lg mb-3 px-5" style="z-index: 1;">
+
+        <!-- Brand -->
+        <a class="navbar-brand text-primary" href="#">
+            TeacherPlanner
+        </a>
+
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse">
+
+        <!-- Navigation -->
+        <ul class="navbar-nav ms-auto text-secondary">
+            <li class="nav-item">
+            <a class="nav-link" id="navbarCursos" href="{{ path('app_getCourses') }}">
+                Cursos
+            </a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="navbarDocentes"  href="" >
+                Docentes
+            </a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="navbarHorario"  href="{{ path('app_getSubjects') }}" >
+                Horario
+            </a>
+            </li>
+        </ul>
+
+        </div>
+
+    </nav>
+
+
         {% block body %}{% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
