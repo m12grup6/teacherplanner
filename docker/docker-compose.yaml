@@ -9,6 +9,7 @@ services:
       - ./000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     depends_on:
       - database
+    restart: unless-stopped
   database:
     image: mysql:5.7
     ports:
