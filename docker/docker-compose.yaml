@@ -7,6 +7,8 @@ services:
     volumes:
       - ../www/teacher_planner:/var/www/html
       - ./000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+    depends_on:
+      - database
   database:
     image: mysql:5.7
     ports:
