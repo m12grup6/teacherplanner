@@ -25,7 +25,7 @@ class SubjectController extends AbstractController
     }
 
     /**
-    * @Route("/add", name="app_subject")
+    * @Route("/add", name="app_addSubject")
     */
     public function addSubject(Request $request){
         $subject = new Subject();

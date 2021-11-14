@@ -28,7 +28,7 @@ class CourseController extends AbstractController
 
 
     /**
-    * @Route("/add", name="app_course")
+    * @Route("/add", name="app_addCourse")
     */
     public function addCourse(Request $request){
         $course = new course();
