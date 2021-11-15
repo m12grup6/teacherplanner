@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CourseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=CourseRepository::class)
@@ -26,6 +27,16 @@ class Course
      * @ORM\Column(type="string", length=30)
      */
     private $cicle;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Subject", mappedBy="course")
+     */
+    private $subjects;
+
+    public function __construct()
+    {
+        $this->subjects = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -55,4 +66,10 @@ class Course
 
         return $this;
     }
+
+    public function getSubjects()
+    {
+        return $this->subjects;
+    }
+
 }

@@ -7,8 +7,8 @@
             <li class="list-group-item">
                 <div class="col-auto">{{ subject.id }}</div>
                 <div class="col-auto">{{ subject.name }}</div>
-                <div class="col-auto">{{ subject.courseId }}</div>
                 <div class="col-auto">{{ subject.hoursWeek }}</div>
+                <div class="col-auto">{{ subject.course.name }} {{ subject.course.cicle }}</div>
             </li>
         {% else %}
             No hay resultados.

@@ -26,6 +26,8 @@ class SubjectController extends AbstractController
 
     /**
     * @Route("/add", name="app_addSubject")
+    * Mètode per afegir una assignatura i grabar-la a la BBDD.
+    * @param request $request informació del formulari per tal d'afegir l'assignatura.
     */
     public function addSubject(Request $request){
         $subject = new Subject();
@@ -34,7 +36,6 @@ class SubjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             $subject->setName($form['name']->getData());
-            $subject->setCourseId($form['course_id']->getData());
             $subject->setHoursWeek($form['hours_week']->getData());
             
             $entityManager = $this->getDoctrine()->getManager();
@@ -56,8 +57,9 @@ class SubjectController extends AbstractController
 
     /**
     * @Route("/", name="app_getSubjects")
+    * Mètode per llistar totes les assignatures donades d'alta.
     */
-    public function showSubject(Request $request){
+    public function showSubjects(){
         $entityManager = $this->getDoctrine()->getManager();
         $allSubjects = $entityManager->getRepository(Subject::class)->findAll();
         return $this->render('subject/allSubjects.html.twig', [
@@ -67,6 +69,8 @@ class SubjectController extends AbstractController
 
     /**
     * @Route("/delete/{id}", name="app_deleteSubjects")
+    * Mètode per borrar l'assignatura passada per paràmetre
+    * @param Integer $id id de l'assignatura a borrar.
     */
     public function deleteSubject($id){
         $entityManager = $this->getDoctrine()->getManager();
@@ -86,6 +90,8 @@ class SubjectController extends AbstractController
 
      /**
     * @Route("/edit/{id}", name="app_updateSubjects")
+    * Mètode per editar l'assignatura passada per paràmetre
+    * @param Integer $id id de l'assignatura a editar.
     */
 
     public function updateSubject(Subject $subject, Request $request): Response{
@@ -103,8 +109,10 @@ class SubjectController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_detailSubject")
+     * Mètode per mostrar el detall d'una assignatura. Mostra el valor dels seus atributs.
+     * @param Subject $subject objecte subject amb les dades de l'assignatura.
      */
-    public function detail(Subject $subject): Response
+    public function detailSubject(Subject $subject): Response
     {
         return $this->render('subject/detail.html.twig',
             ['subject' => $subject]);
