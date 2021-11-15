@@ -26,7 +26,7 @@ class TeacherController extends AbstractController
 
 
     /**
-    * @Route("/add", name="app_teacher")
+    * @Route("/add", name="app_addTeacher")
     * Mètode per afegir un teacher i grabar-lo a la BBDD.
     * @param request $request informació del formulari per tal d'afegir el teacher.
     */
