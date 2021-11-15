@@ -1,14 +1,12 @@
 
-$theme-colors: (
-    "primary": #335eea,
-    "secondary": #506690,
-    "dark": #1b2a4e
-);
+$primary: #335eea;
+$secondary: #506690;
+$dark: #1b2a4e;
 
 @import '~bootstrap';
 
 .list-group-item:hover {
-    cursor: pointer
+    // cursor: pointer
 }
 
 .card-header {
