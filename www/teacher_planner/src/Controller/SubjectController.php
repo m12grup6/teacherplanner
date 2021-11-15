@@ -37,7 +37,7 @@ class SubjectController extends AbstractController
             
             $subject->setName($form['name']->getData());
             $subject->setHoursWeek($form['hours_week']->getData());
-            
+                        
             $entityManager = $this->getDoctrine()->getManager();
 
             // tell Doctrine you want to (eventually) save the subject
@@ -46,7 +46,8 @@ class SubjectController extends AbstractController
             // actually executes the action in the ddbb (in this case insert subject)
             $entityManager->flush();
             
-            return $this->redirectToRoute('app_getSubjects');            
+            $course = $subject->getCourse();
+            return $this->redirectToRoute('app_detailCourses', ['id' => $course->getId()]);            
         }
 
         return $this->render('subject/add.html.twig', [
