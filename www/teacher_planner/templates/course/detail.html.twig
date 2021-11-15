@@ -1,9 +1,51 @@
 {% extends 'base.html.twig' %}
 {% block title %}Curs{% endblock %}
+{% block sectiontitle %}{{ course.name }} de {{ course.cicle == 'primary' ? 'primària' : 'secundària' }}{% endblock %}
 {% block body %}
-    <h2>Curs {{ course.name }}</h2>
-        <li>
-            Cicle: {{ course.cicle }}
-            Assignatures: 
-        </li>
+    <div class="card card-bleed shadow-light-lg">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+
+                <!-- Heading -->
+                <h4 class="mb-0">
+                    Assignatures
+                </h4>
+
+                </div>
+                <div class="col-auto">
+
+                <!-- Button -->
+                <a class="text-decoration-none text-white" href="{{ path('app_addSubject') }}">
+                    <button class="btn btn-xs btn-primary">
+                        Afegir
+                    </button>
+                </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for subject in course.getSubjects %}
+                    <li class="list-group-item">
+                        <div class="row align-items-center text-secondary">
+                            <div class="col-auto">{{ subject.id }}</div>
+                            <div class="col-auto">{{ subject.name }}, {{ subject.course.name | lower }} de {{ subject.course.cicle == 'primary' ? 'primària' : 'secundària' }} ({{ subject.hoursWeek }} hores lectives)</div>
+                            <div class="col-auto">
+                                <a href="../subjects/delete/{{ subject.id }}" class="text-decoration-none">
+                                    <button class="col-auto btn btn-xs btn-danger">
+                                    Esborrar
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">
+                        No n'hi ha
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

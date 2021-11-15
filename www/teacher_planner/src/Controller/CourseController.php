@@ -28,7 +28,7 @@ class CourseController extends AbstractController
 
 
     /**
-    * @Route("/add", name="app_course")
+    * @Route("/add", name="app_addCourse")
     * Mètode per afegir un curs i grabar-lo a la BBDD.
     * @param request $request informació del formulari per tal d'afegir el curs.
     */

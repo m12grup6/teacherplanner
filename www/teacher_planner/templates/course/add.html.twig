@@ -1,11 +1,33 @@
 {% extends 'base.html.twig' %}
-{% block title %}Curs{% endblock %}
+{% block title %}Afegir Curs{% endblock %}
+{% block sectiontitle %}Afegir Curs{% endblock %}
 {% block body %}
-    <h2>Curs</h2>
-    {{ form_start(form) }}
 
-    {{ form_widget(form) }}
+    <div class="row align-items-center justify-content-center gx-5">
+        <div class="col-4">
+            {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
 
-    {{ form_end(form) }}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.name, {'label': 'Nom'}) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" id="">
+                    {{ form_row(form.cicle) }}
+                </div>
+            </div>
+            {{ form_row(form.submit, { 'label': 'Afegir' }) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="col-6">
+            <img src="{{ asset('images/takingnotes-amico.png') }}" alt="..." class="img-fluid">
+        
+        </div>
+    </div>
+
 {% endblock %}
 

@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}Assignatura{% endblock %}
+{% block sectiontitle %}{{ subject.name }}{% endblock %}
 {% block body %}
-    <h2>Curs {{ subject.name }}</h2>
+    <h2>{{ subject.name }}</h2>
         <li>
-            Cicle: {{ subject.courseId }}
+            Cicle: {{ subject.course.name }}
             Hores per setmana: {{ subject.hoursWeek }}
         </li>
 {% endblock %}
