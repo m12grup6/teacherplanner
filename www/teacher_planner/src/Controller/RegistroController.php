@@ -30,7 +30,7 @@ class RegistroController extends AbstractController
             $user->setUpdatedAt(new DateTimeImmutable());
             $em->persist($user);
             $em->flush();
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('app_login');
         }
         return $this->render('registro/index.html.twig', [
             'controller_name' => 'RegistroController',
