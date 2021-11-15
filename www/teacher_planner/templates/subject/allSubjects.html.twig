@@ -2,16 +2,40 @@
 {% block title %}Assignatures{% endblock %}
 {% block sectiontitle %}Assignatures{% endblock %}
 {% block body %}
-    <ul class="list-group">
-        {% for subject in allSubjects %}
-            <li class="list-group-item">
-                <div class="col-auto">{{ subject.id }}</div>
-                <div class="col-auto">{{ subject.name }}</div>
-                <div class="col-auto">{{ subject.hoursWeek }}</div>
-                <div class="col-auto">{{ subject.course.name }} {{ subject.course.cicle }}</div>
-            </li>
-        {% else %}
-            No hay resultados.
-        {% endfor %}
-    </ul>
+    <div class="card card-bleed shadow-light-lg">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+
+                <!-- Heading -->
+                <h4 class="mb-0">
+                    Llista d'Assignatures
+                </h4>
+
+                </div>
+                <div class="col-auto">
+
+                <!-- Button -->
+                <button class="btn btn-xs btn-primary">
+                    <a class="text-decoration-none text-white" href="{{ path('app_addCourse') }}">Afegir</a>
+                </button>
+
+                </div>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for subject in allSubjects %}
+                <li class="list-group-item">
+                    <a class="text-decoration-none text-secondary" href="{{ subject.id }}">
+                    <div class="row align-items-center">
+                        <div class="col-auto">{{ subject.id }}</div>
+                        <div class="col-auto">{{ subject.name }}, {{ subject.course.name | lower }} de {{ subject.course.cicle == 'primary' ? 'primària' : 'secundària' }} ({{ subject.hoursWeek }} hores lectives)</div>
+                    </div>
+                    </a>
+                </li>
+            {% else %}
+                No hay resultados.
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
