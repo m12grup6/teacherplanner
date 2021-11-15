@@ -23,19 +23,21 @@
                 </div>
             </div>
         </div>
-        <ul class="list-group list-group-flush">
-            {% for course in allCourses %}
-                <li class="list-group-item">
-                    <a class="text-decoration-none text-secondary" href="{{ course.id }}">
-                    <div class="row align-items-center">
-                        <div class="col-auto">{{ course.id }}</div>
-                        <div class="col-auto">{{ course.name }} de {{ course.cicle == 'primary' ? 'primària' : 'secundària' }}</div>
-                    </div>
-                    </a>
-                </li>
-            {% else %}
-                No hay resultados.
-            {% endfor %}
-        </ul>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for course in allCourses %}
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-secondary" href="{{ course.id }}">
+                        <div class="row align-items-center">
+                            <div class="col-auto">{{ course.id }}</div>
+                            <div class="col-auto">{{ course.name }} de {{ course.cicle == 'primary' ? 'primària' : 'secundària' }}</div>
+                        </div>
+                        </a>
+                    </li>
+                {% else %}
+                    No hay resultados.
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

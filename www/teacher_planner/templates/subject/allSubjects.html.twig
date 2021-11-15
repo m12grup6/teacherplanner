@@ -23,19 +23,21 @@
                 </div>
             </div>
         </div>
-        <ul class="list-group list-group-flush">
-            {% for subject in allSubjects %}
-                <li class="list-group-item">
-                    <a class="text-decoration-none text-secondary" href="{{ subject.id }}">
-                    <div class="row align-items-center">
-                        <div class="col-auto">{{ subject.id }}</div>
-                        <div class="col-auto">{{ subject.name }}, {{ subject.course.name | lower }} de {{ subject.course.cicle == 'primary' ? 'primària' : 'secundària' }} ({{ subject.hoursWeek }} hores lectives)</div>
-                    </div>
-                    </a>
-                </li>
-            {% else %}
-                No hay resultados.
-            {% endfor %}
-        </ul>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for subject in allSubjects %}
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-secondary" href="{{ subject.id }}">
+                        <div class="row align-items-center">
+                            <div class="col-auto">{{ subject.id }}</div>
+                            <div class="col-auto">{{ subject.name }}, {{ subject.course.name | lower }} de {{ subject.course.cicle == 'primary' ? 'primària' : 'secundària' }} ({{ subject.hoursWeek }} hores lectives)</div>
+                        </div>
+                        </a>
+                    </li>
+                {% else %}
+                    No hay resultados.
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
