@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Profes{% endblock %}
+{% block body %}
+    <table>
+        {% for teacher in allTeachers %}
+            <tr>
+                <td>{{ teacher.id }}</td>
+                <td>{{ teacher.name }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>No hay resultados.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
