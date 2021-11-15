@@ -1,9 +1,30 @@
 {% extends 'base.html.twig' %}
 {% block title %}Curs{% endblock %}
+{% block sectiontitle %}{{ course.name }} de {{ course.cicle == 'primary' ? 'primària' : 'secundària' }}{% endblock %}
 {% block body %}
-    <h2>Curs {{ course.name }}</h2>
-        <li>
-            Cicle: {{ course.cicle }}
-            Assignatures: 
-        </li>
+    <div class="card card-bleed shadow-light-lg">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+
+                <!-- Heading -->
+                <h4 class="mb-0">
+                    Assignatures
+                </h4>
+
+                </div>
+                <div class="col-auto">
+
+                <!-- Button -->
+                <button class="btn btn-xs btn-primary">
+                    <a class="text-decoration-none text-white" href="{{ path('app_addSubject') }}">Afegir</a>
+                </button>
+
+                </div>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+
+        </ul>
+    </div>
 {% endblock %}

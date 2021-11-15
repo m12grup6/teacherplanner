@@ -1,18 +1,17 @@
 {% extends 'base.html.twig' %}
 {% block title %}Assignatures{% endblock %}
+{% block sectiontitle %}Assignatures{% endblock %}
 {% block body %}
-    <table>
+    <ul class="list-group">
         {% for subject in allSubjects %}
-            <tr>
-                <td>{{ subject.id }}</td>
-                <td>{{ subject.name }}</td>
-                <td>{{ subject.courseId }}</td>
-                <td>{{ subject.hoursWeek }}</td>
-            </tr>
+            <li class="list-group-item">
+                <div class="col-auto">{{ subject.id }}</div>
+                <div class="col-auto">{{ subject.name }}</div>
+                <div class="col-auto">{{ subject.courseId }}</div>
+                <div class="col-auto">{{ subject.hoursWeek }}</div>
+            </li>
         {% else %}
-            <tr>
-                <td>No hay resultados.</td>
-            </tr>
+            No hay resultados.
         {% endfor %}
-    </table>
+    </ul>
 {% endblock %}
