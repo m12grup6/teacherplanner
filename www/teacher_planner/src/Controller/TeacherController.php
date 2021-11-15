@@ -4,18 +4,33 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\TeacherType;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+
+
+/**
+* @Route("/teachers")
+*/
 
 class TeacherController extends AbstractController
 {
-    /**
-    * @Route("/teacher", name="teacher")
-    */
-    public function index(Request $request): Response
+
+    public function __construct (UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
+        $this->userRepository = $userRepository;
+        $this->entityManager = $entityManager;
+    }
+
+
+    /**
+    * @Route("/add", name="app_teacher")
+    * Mètode per afegir un teacher i grabar-lo a la BBDD.
+    * @param request $request informació del formulari per tal d'afegir el teacher.
+    */
+    public function addTeacher(Request $request){
         $user = new User();
         $form = $this->createForm(TeacherType::class, $user);
         $form->handleRequest($request);
@@ -28,18 +43,21 @@ class TeacherController extends AbstractController
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'El professor ha sigut registrat');
-            return $this->redirectToRoute('teacher');
+
+            return $this->redirectToRoute('app_getTeachers');
         }
-        return $this->render('teacher/index.html.twig', [
-            'controller_name' => 'Hola profes',
-            'formulario'=>$form->createView()
+
+        return $this->render('teacher/add.html.twig', [
+            'controller_name' => 'TeacherController',
+            'form'=>$form->createView()
         ]);
     }
 
     /**
-    * @Route("/showTeachers", name="app_getTeachers")
+    * @Route("/", name="app_getTeachers")
+    * Mètode per llistar tots els teachers donats d'alta.
     */
-    public function showTeacher(){
+    public function showTeachers(){
         $entityManager = $this->getDoctrine()->getManager();
         $allTeachers = $entityManager->getRepository(User::class)->findAll();
         return $this->render('teacher/allTeachers.html.twig', [
@@ -48,12 +66,14 @@ class TeacherController extends AbstractController
     }
 
     /**
-    * @Route("/deleteTeacher/{id}", name="app_deleteTeachers")
+    * @Route("/delete/{id}", name="app_deleteTeachers")
+    * Mètode per esborrar el teacher passat per paràmetre
+    * @param Integer $id id del teacher a esborrar.
     */
     public function deleteTeacher($id){
         $entityManager = $this->getDoctrine()->getManager();
      
-        $teacher = $entityManager->getRepository(Teacher::class)->find($id);
+        $teacher = $entityManager->getRepository(User::class)->find($id);
 
         if (!$teacher) {
             throw $this->createNotFoundException(
@@ -66,10 +86,12 @@ class TeacherController extends AbstractController
         return $this->redirectToRoute('app_getTeachers');
     }
 
-    /**
-    * @Route("/editTeacher/{id}", name="app_editCourses")
-    */
 
+     /**
+    * @Route("/edit/{id}", name="app_updateTeachers")
+    * Mètode per editar el teacher passat per paràmetre
+    * @param Integer $id id del teacher a editar.
+    */
     public function updateTeacher(Teacher $teacher, Request $request): Response{
         $form = $this->createForm(TeacherType::class, $teacher);
         $form->handleRequest($request);
@@ -81,5 +103,17 @@ class TeacherController extends AbstractController
         }
 
         return $this->render('teacher/add.html.twig', ['form' => $form->createView()]);
+    }
+
+
+    /**
+     * @Route("/{id}", name="app_detailTeacher")
+     * Mètode per mostrar el detall d'un teacher. Mostra el valor dels seus atributs.
+     * @param Subject $subject objecte subject amb les dades del teacher.
+     */
+    public function detailTeacher(Teacher $teacher): Response
+    {
+        return $this->render('teacher/detail.html.twig',
+            ['teacher' => $teacher]);
     }
 }
