@@ -1,6 +1,6 @@
 FROM php:7.4-apache
 
-RUN apt-get update && apt-get install -y libmcrypt-dev zip git && \
+RUN apt-get update && apt-get install -y libmcrypt-dev zip git npm && \
 pecl install mcrypt && \
 docker-php-ext-enable mcrypt \
 && docker-php-ext-install pdo_mysql \
