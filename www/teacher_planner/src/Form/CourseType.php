@@ -17,8 +17,8 @@ class CourseType extends AbstractType
             ->add('name')
             ->add('cicle', ChoiceType::class, array(
                 'choices' => array(
-                    'Primària' => 'primary',
-                    'Secundària' => 'secondary'
+                    'Primària' => 'Primaria',
+                    'Secundària' => 'Secundaria'
                 ),
                 'required'    => true,
                 'placeholder' => 'Selecciona el cicle',
