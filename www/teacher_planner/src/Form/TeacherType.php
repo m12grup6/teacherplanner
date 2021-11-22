@@ -18,7 +18,7 @@ class TeacherType extends AbstractType
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
             ->add('name')
-            ->add('Registro', SubmitType::class)
+            ->add('submit', SubmitType::class)
         ;
     }
 
