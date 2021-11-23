@@ -29,11 +29,13 @@
                     Cursos
                 </a>
                 </li>
+                <!--
                 <li class="nav-item">
                 <a class="nav-link" id="navbarSubjects" href="{{ path('app_getSubjects') }}">
                     Assignatures
                 </a>
-                </li>                
+                </li>         
+                -->       
                 <li class="nav-item">
                 <a class="nav-link" id="navbarDocents"  href="{{ path('app_getTeachers') }}" >
                     Docents
@@ -42,6 +44,13 @@
                 <li class="nav-item">
                 <a class="nav-link" id="navbarHorari"  href="{{ path('app_getSubjects') }}" >
                     Horari
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="navbarCompte"  href="{{ path('app_logout') }}" >
+                {% if app.user %}
+                    Logout
+                {% endif %}
                 </a>
                 </li>
             </ul>
