@@ -87,12 +87,12 @@ class TeacherController extends AbstractController
     }
 
 
-     /**
+    /**
     * @Route("/edit/{id}", name="app_updateTeachers")
     * Mètode per editar el teacher passat per paràmetre
     * @param Integer $id id del teacher a editar.
     */
-    public function updateTeacher(Teacher $teacher, Request $request): Response{
+    public function updateTeacher(User $teacher, Request $request): Response{
         $form = $this->createForm(TeacherType::class, $teacher);
         $form->handleRequest($request);
 
@@ -109,9 +109,9 @@ class TeacherController extends AbstractController
     /**
      * @Route("/{id}", name="app_detailTeacher")
      * Mètode per mostrar el detall d'un teacher. Mostra el valor dels seus atributs.
-     * @param Subject $subject objecte subject amb les dades del teacher.
+     * @param Teacher $teacher objecte subject amb les dades del teacher.
      */
-    public function detailTeacher(Teacher $teacher): Response
+    public function detailTeacher(User $teacher): Response
     {
         return $this->render('teacher/detail.html.twig',
             ['teacher' => $teacher]);
