@@ -8,6 +8,10 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}     
+
     </head>
     <body class="bg-light">
 
@@ -46,12 +50,16 @@
                     Horari
                 </a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" id="navbarCompte"  href="{{ path('app_logout') }}" >
-                {% if app.user %}
-                    Logout
-                {% endif %}
-                </a>
+                <li class="nav-item dropdown">
+                    <a class="btn nav-link dropdown-toggle" role="button" id="navbarCompte"  href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if app.user %}
+                        {{ app.user.name }}
+                    {% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Compte</a>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                    </div>                    
                 </li>
             </ul>
             {% endblock %}
@@ -75,9 +83,6 @@
     <main class="container-md mt-5">
     {% block body %}
     {% endblock %}
-    </main>
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}        
+    </main>   
     </body>
 </html>
