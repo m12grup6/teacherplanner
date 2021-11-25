@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}Restriccions{% endblock %}
+{% block sectiontitle %}Restriccions{% endblock %}
+{% block body %}
+    <div class="card card-bleed shadow-light-lg">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+
+                <!-- Heading -->
+                <h4 class="mb-0">
+                    Llista de Restriccions
+                </h4>
+
+                </div>
+                <div class="col-auto">
+
+                <!-- Button -->
+                <button class="btn btn-xs btn-primary">
+                    <a class="text-decoration-none text-white" href="{{ path('app_addTeacher') }}">Afegir</a>
+                </button>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for restrictions in allRestrictions %}
+                    <li class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-auto">{{ restrictions.day }}</div>
+                            <div class="col-auto">{{ restrictions.hora_inici }}</div>
+                            <div class="col-auto">{{ restrictions.hora_fi }}</div>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">
+                        No n'hi ha
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
