@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Restrictions;
+use App\Entity\Restriction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Restrictions|null find($id, $lockMode = null, $lockVersion = null)
- * @method Restrictions|null findOneBy(array $criteria, array $orderBy = null)
- * @method Restrictions[]    findAll()
- * @method Restrictions[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Restriction|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Restriction|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Restriction[]    findAll()
+ * @method Restriction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RestrictionsRepository extends ServiceEntityRepository
+class RestrictionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Restrictions::class);
+        parent::__construct($registry, Restriction::class);
     }
 
     // /**
-    //  * @return Restrictions[] Returns an array of Restrictions objects
+    //  * @return Restrictions[] Returns an array of Restriction objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class RestrictionsRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Restrictions
+    public function findOneBySomeField($value): ?Restriction
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.exampleField = :val')

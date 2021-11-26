@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\RestrictionsRepository;
+use App\Repository\RestrictionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=RestrictionsRepository::class)
+ * @ORM\Entity(repositoryClass=RestrictionRepository::class)
  */
-class Restrictions
+class Restriction
 {
     /**
      * @ORM\Id

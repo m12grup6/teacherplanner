@@ -25,12 +25,12 @@
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                {% for restrictions in allRestrictions %}
+                {% for restriction in allRestrictions %}
                     <li class="list-group-item">
                         <div class="row align-items-center">
-                            <div class="col-auto">{{ restrictions.day }}</div>
-                            <div class="col-auto">{{ restrictions.hora_inici }}</div>
-                            <div class="col-auto">{{ restrictions.hora_fi }}</div>
+                            <div class="col-auto">{{ restriction.day }}</div>
+                            <div class="col-auto">{{ restriction.hora_inici }}</div>
+                            <div class="col-auto">{{ restriction.hora_fi }}</div>
                         </div>
                     </li>
                 {% else %}
