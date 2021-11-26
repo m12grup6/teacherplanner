@@ -25,7 +25,7 @@ class RestrictionController extends AbstractController
     }
 
     /**
-    * @Route("/", name="app_addRestriction")
+    * @Route("/add", name="app_addRestriction")
     * Mètode per afegir una restriccio i grabar-la a la BBDD.
     */    
     public function addRestriction(Request $request){
@@ -34,7 +34,11 @@ class RestrictionController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
-            // ¿Pot ser que falti obtenir el data del form i set els atributs de la restricció?
+            // ¿Pot ser que falti obtenir el data del form i fer set dels atributs de la restricció?
+            // exemple del controller de course:
+            // $course->setName($form['name']->getData());
+
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($restriction);
