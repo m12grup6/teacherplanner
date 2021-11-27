@@ -32,7 +32,9 @@ class SubjectController extends AbstractController
     */
     public function addSubject(Request $request){
         $subject = new Subject();
-        $form = $this->createForm(SubjectType::class, $subject);
+        $form = $this->createForm(SubjectType::class, $subject,
+        array('selected_course_id' => $request->get('selected_course_id')));
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
