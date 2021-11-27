@@ -26,11 +26,11 @@ class SubjectController extends AbstractController
     }
 
     /**
-    * @Route("/add/{id}", name="app_addSubject")
+    * @Route("/add", name="app_addSubject")
     * Mètode per afegir una assignatura i grabar-la a la BBDD.
     * @param request $request informació del formulari per tal d'afegir l'assignatura.
     */
-    public function addSubject(Request $request, Course $course){
+    public function addSubject(Request $request){
         $subject = new Subject();
         $form = $this->createForm(SubjectType::class, $subject);
         $form->handleRequest($request);
