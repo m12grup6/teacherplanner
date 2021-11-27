@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use App\Entity\Subject;
+use App\Entity\Course;
 use App\Form\SubjectType;
 use App\Repository\SubjectRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +26,11 @@ class SubjectController extends AbstractController
     }
 
     /**
-    * @Route("/add", name="app_addSubject")
+    * @Route("/add/{id}", name="app_addSubject")
     * Mètode per afegir una assignatura i grabar-la a la BBDD.
     * @param request $request informació del formulari per tal d'afegir l'assignatura.
     */
-    public function addSubject(Request $request){
+    public function addSubject(Request $request, Course $course){
         $subject = new Subject();
         $form = $this->createForm(SubjectType::class, $subject);
         $form->handleRequest($request);
@@ -37,7 +38,7 @@ class SubjectController extends AbstractController
             
             $subject->setName($form['name']->getData());
             $subject->setHoursWeek($form['hours_week']->getData());
-                        
+                                    
             $entityManager = $this->getDoctrine()->getManager();
 
             // tell Doctrine you want to (eventually) save the subject
@@ -46,8 +47,9 @@ class SubjectController extends AbstractController
             // actually executes the action in the ddbb (in this case insert subject)
             $entityManager->flush();
             
-            $course = $subject->getCourse();
-            return $this->redirectToRoute('app_detailCourses', ['id' => $course->getId()]);            
+            //$course = $subject->getCourse();
+            //return $this->redirectToRoute('app_getCourses', ['id' => $course->getId()]);
+            return $this->redirectToRoute('app_getCourses');            
         }
 
         return $this->render('subject/add.html.twig', [
