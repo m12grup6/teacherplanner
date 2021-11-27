@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use App\Entity\Restriction;
+use App\Entity\User;
 use App\Form\RestrictionType;
 use App\Repository\RestrictionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,16 +31,15 @@ class RestrictionController extends AbstractController
     */    
     public function addRestriction(Request $request){
         $restriction = new Restriction();
+        $teacher = new User();
         $form = $this->createForm(RestrictionType::class, $restriction);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
             // ¿Pot ser que falti obtenir el data del form i fer set dels atributs de la restricció?
             // exemple del controller de course:
-            // $course->setName($form['name']->getData());
-
-
-
+            $teacher->setName($form['name']->getData());
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($restriction);
             $em->flush();
