@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistroController extends AbstractController
 {
     /**
-     * @Route("/registro", name="registro")
+     * @Route("/register", name="app_registerAdmin")
      */
     public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -25,7 +25,7 @@ class RegistroController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $user->setPassword($passwordEncoder->encodePassword($user, $form['password']->getData()));
             $user->setIsActive(false);
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(['ROLE_ADMIN']);
             $user->setCreatedAt(new DateTimeImmutable());
             $user->setUpdatedAt(new DateTimeImmutable());
             $em->persist($user);
