@@ -60,6 +60,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $updated_at;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $teaching_hours;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $teacher_constraints = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -193,6 +203,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getTeachingHours(): ?int
+    {
+        return $this->teaching_hours;
+    }
+
+    public function setTeachingHours(?int $teaching_hours): self
+    {
+        $this->teaching_hours = $teaching_hours;
+
+        return $this;
+    }
+
+    public function getTeacherConstraints(): ?array
+    {
+        return $this->teacher_constraints;
+    }
+
+    public function setTeacherConstraints(?array $teacher_constraints): self
+    {
+        $this->teacher_constraints = $teacher_constraints;
 
         return $this;
     }
