@@ -8,6 +8,7 @@ use App\Form\TeacherConstraintType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,10 +21,11 @@ use Doctrine\ORM\EntityManagerInterface;
 class TeacherController extends AbstractController
 {
 
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->passwordHasher= $passwordHasher;
     }
 
 
@@ -42,7 +44,11 @@ class TeacherController extends AbstractController
             $user->setIsActive(true);
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
-
+            
+            $user->setPassword($this->passwordHasher->hashPassword(
+                $user,
+                $user->getPassword()
+            ));
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'El professor ha sigut registrat');
@@ -157,4 +163,24 @@ class TeacherController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+     /**
+     * @Route("/{id}/constraints/show", name="app_showConstraint")
+     * Mètode per mostrar franja de restricció al professor
+     * @param Integer $id del teacher a mostrar.
+     */
+    public function showConstraint(User $teacher, Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $allConstraints = $entityManager->getRepository(User::class)->findAll();
+        //var_dump($teacher);die();
+        return $this->render('teacher/allConstraints.html.twig', [
+            'allConstraints' => $allConstraints,
+            'teacher_constraints' => json_encode($teacher->getTeacherConstraints())
+        ]);
+        
+                
+    }
+    
+
 }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Docents{% endblock %}
-{% block sectiontitle %}Docents{% endblock %}
+{% block title %}Restriccions docents{% endblock %}
+{% block sectiontitle %}Restriccions docents{% endblock %}
 {% block body %}
     <div class="card card-bleed shadow-light-lg">
         <div class="card-header">
@@ -9,7 +9,7 @@
 
                 <!-- Heading -->
                 <h4 class="mb-0">
-                    Llista de Docents
+                    Llista d'Docents
                 </h4>
 
                 </div>
@@ -17,7 +17,7 @@
 
                 <!-- Button -->
                 <button class="btn btn-xs btn-primary">
-                    <a class="text-decoration-none text-white" href="{{ path('app_addTeacher') }}">Afegir</a>
+                    <a class="text-decoration-none text-white" href="{{ path('app_showConstraint', {id: teacher.id}, relative = false)}}">Afegir</a>
                 </button>
 
                 </div>
@@ -25,20 +25,19 @@
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                {% for teacher in allTeachers %}
-                {% if teacher %}
+                {% for teacher in allConstraints %}
                     <li class="list-group-item">
                         <div class="row align-items-center">
                             <div class="col-auto">{{ teacher.id }}</div>
                             <div class="col-auto">{{ teacher.name }}</div>
+                            {% if teacher_constraints is defined %}
+                                <pre>{{ teacher_constraints }}</pre>
+                            {% endif %}
                         </div>
-                    </li>
-                {% else %}
-                    <li class="list-group-item">
-                        No n'hi ha
                     </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
 {% endblock %}
+
