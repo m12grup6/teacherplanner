@@ -26,6 +26,7 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 {% for teacher in allTeachers %}
+<<<<<<< HEAD
                     {% if teacher %}
                         <li class="list-group-item">
                             <div class="row align-items-center">
@@ -52,6 +53,20 @@
                             No n'hi ha
                         </li>
                     {% endif %}
+=======
+                {% if teacher %}
+                    <li class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-auto">{{ teacher.id }}</div>
+                            <div class="col-auto">{{ teacher.name }}</div>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">
+                        No n'hi ha
+                    </li>
+                {% endif %}
+>>>>>>> 76e4c52507146ef4d1c2846ad287a9425f367dee
                 {% endfor %}
             </ul>
         </div>
