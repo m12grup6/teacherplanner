@@ -44,7 +44,7 @@ class TeacherController extends AbstractController
             $user->setIsActive(true);
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
-            
+
             $user->setPassword($this->passwordHasher->hashPassword(
                 $user,
                 $user->getPassword()
@@ -142,16 +142,25 @@ class TeacherController extends AbstractController
         $form = $this->createForm(TeacherConstraintType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $newConstraint = array(array(
-                'dia' => $form->get('dia')->getData(),
-                'hora_inici' => $form->get('hora_inici')->getData(),
-                'hora_fi' => $form->get('hora_fi')->getData(),
-            ));
-            if (is_array($teacher->getTeacherConstraints())) {
-                $newConstraint = array_merge($newConstraint, $teacher->getTeacherConstraints());
+            if ($form->get('hora_inici')->getData() instanceof \Datetime) {
+                $horaInici = $form->get('hora_inici')->getData()->format('H:i:s');
             }
+            if ($form->get('hora_fi')->getData() instanceof \Datetime) {
+                $horaFi = $form->get('hora_fi')->getData()->format('H:i:s');
+            }
+            $dia = $this->translateDay($form->get('dia')->getData());
+            if (is_array($teacher->getTeacherConstraints())) {
+                $newConstraint = $teacher->getTeacherConstraints();
+            } else {
+                $newConstraint = array();
+            }
+            $newConstraint[] = array(
+                'dia' => $dia,
+                'hora_inici' => $horaInici,
+                'hora_fi' => $horaFi
+            );
             $teacher->setTeacherConstraints($newConstraint);
-            
+
             $this->entityManager->flush();
             $this->addFlash('success', 'Restricció afegida correctament');
 
@@ -173,14 +182,34 @@ class TeacherController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $allConstraints = $entityManager->getRepository(User::class)->findAll();
-        //var_dump($teacher);die();
         return $this->render('teacher/allConstraints.html.twig', [
-            'allConstraints' => $allConstraints,
-            'teacher_constraints' => json_encode($teacher->getTeacherConstraints())
+            'teacher' => $teacher
         ]);
-        
-                
+
+
     }
-    
+
+    private function translateDay($day)
+    {
+        $newDay = $day;
+        switch ($day) {
+            case 'monday':
+                $newDay = "Dilluns";
+                break;
+            case 'tuesday':
+                $newDay = "Dimarts";
+                break;
+            case 'wednesday':
+                $newDay = "Dimecres";
+                break;
+            case 'thursday':
+                $newDay = "Dijous";
+                break;
+            case 'friday':
+                $newDay = "Divendres";
+                break;
+        }
+        return $newDay;
+    }
 
 }

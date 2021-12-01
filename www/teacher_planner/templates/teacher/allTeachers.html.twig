@@ -7,18 +7,18 @@
             <div class="row align-items-center">
                 <div class="col">
 
-                <!-- Heading -->
-                <h4 class="mb-0">
-                    Llista de Docents
-                </h4>
+                    <!-- Heading -->
+                    <h4 class="mb-0">
+                        Llista de Docents
+                    </h4>
 
                 </div>
                 <div class="col-auto">
 
-                <!-- Button -->
-                <button class="btn btn-xs btn-primary">
-                    <a class="text-decoration-none text-white" href="{{ path('app_addTeacher') }}">Afegir</a>
-                </button>
+                    <!-- Button -->
+                    <button class="btn btn-xs btn-primary">
+                        <a class="text-decoration-none text-white" href="{{ path('app_addTeacher') }}">Afegir</a>
+                    </button>
 
                 </div>
             </div>
@@ -26,17 +26,32 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 {% for teacher in allTeachers %}
-                {% if teacher %}
-                    <li class="list-group-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">{{ teacher.id }}</div>
-                            <div class="col-auto">{{ teacher.name }}</div>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="list-group-item">
-                        No n'hi ha
-                    </li>
+                    {% if teacher %}
+                        <li class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">{{ teacher.id }}</div>
+                                <div class="col mb-0">{{ teacher.name }}</div>
+                                <div class="col-auto end-0">
+                                    <a class="text-decoration-none text-white" title="Editar Horarios"
+                                       href="{{ path('app_addConstraint',{'id' : teacher.id }) }}">
+                                        <button class="btn btn-xs btn-primary">
+                                            &#8986;
+                                        </button>
+                                    </a>
+                                    <a class="text-decoration-none text-white" title="Ver detalles"
+                                       href="{{ path('app_detailTeacher',{'id' : teacher.id }) }}">
+                                        <button class="btn btn-xs btn-primary">
+                                            &#128196;
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">
+                            No n'hi ha
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

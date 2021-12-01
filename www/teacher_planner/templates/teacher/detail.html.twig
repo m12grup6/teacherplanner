@@ -1,5 +1,25 @@
 {% extends 'base.html.twig' %}
 {% block title %}Teacher{% endblock %}
 {% block body %}
-    <h2>Professor: {{ teacher.name }}</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <th>Identificador</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Horari</th>
+        </thead>
+        <tr>
+            <td>{{ teacher.id }}</td>
+            <td>{{ teacher.name }}</td>
+            <td>{{ teacher.email }}</td>
+            <td>
+                <a class="text-decoration-none text-white"
+                   href="{{ path('app_showConstraint',{'id' : teacher.id }) }}">
+                    <button class="btn btn-xs btn-primary">
+                        Veure horari &#8986;
+                    </button>
+                </a>
+            </td>
+        </tr>
+    </table>
 {% endblock %}
