@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SubjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,6 +38,16 @@ class Subject
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Schedule::class, mappedBy="subject")
+     */
+    private $schedules;
+
+    public function __construct()
+    {
+        $this->schedules = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -79,6 +91,36 @@ class Subject
     public function setHoursWeek(int $hours_week): self
     {
         $this->hours_week = $hours_week;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedule $schedule): self
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules[] = $schedule;
+            $schedule->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedule $schedule): self
+    {
+        if ($this->schedules->removeElement($schedule)) {
+            // set the owning side to null (unless already changed)
+            if ($schedule->getSubject() === $this) {
+                $schedule->setSubject(null);
+            }
+        }
 
         return $this;
     }

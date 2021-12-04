@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -69,6 +71,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="json", nullable=true)
      */
     private $teacher_constraints = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=Schedule::class, mappedBy="teacher")
+     */
+    private $schedules;
+
+    public function __construct()
+    {
+        $this->schedules = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -227,6 +239,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTeacherConstraints(?array $teacher_constraints): self
     {
         $this->teacher_constraints = $teacher_constraints;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedule $schedule): self
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules[] = $schedule;
+            $schedule->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedule $schedule): self
+    {
+        if ($this->schedules->removeElement($schedule)) {
+            // set the owning side to null (unless already changed)
+            if ($schedule->getTeacher() === $this) {
+                $schedule->setTeacher(null);
+            }
+        }
 
         return $this;
     }
