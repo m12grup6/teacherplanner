@@ -16,9 +16,11 @@
                 <div class="col-auto">
 
                     <!-- Button -->
-                    <button class="btn btn-xs btn-primary">
-                        <a class="text-decoration-none text-white" href="{{ path('app_addTeacher') }}">Afegir</a>
-                    </button>
+                    <a class="text-decoration-none text-white" href="{{ path('app_addTeacher') }}">
+                        <button class="btn btn-xs btn-primary">
+                            Afegir
+                        </button>
+                    </a>
 
                 </div>
             </div>
@@ -26,15 +28,14 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 {% for teacher in allTeachers %}
-
                     {% if teacher %}
                         <li class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">{{ teacher.id }}</div>
                                 <div class="col mb-0">{{ teacher.name }}</div>
                                 <div class="col-auto end-0">
-                                    <a class="text-decoration-none text-white" title="Editar Horarios"
-                                       href="{{ path('app_addConstraint',{'id' : teacher.id }) }}">
+                                    <a class="text-decoration-none text-white" title="Ver Horarios"
+                                       href="{{ path('app_showConstraint',{'id' : teacher.id }) }}">
                                         <button class="btn btn-xs btn-primary">
                                             &#8986;
                                         </button>
@@ -53,18 +54,6 @@
                             No n'hi ha
                         </li>
                     {% endif %}
-                {% if teacher %}
-                    <li class="list-group-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">{{ teacher.id }}</div>
-                            <div class="col-auto">{{ teacher.name }}</div>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="list-group-item">
-                        No n'hi ha
-                    </li>
-                {% endif %}
                 {% endfor %}
             </ul>
         </div>
