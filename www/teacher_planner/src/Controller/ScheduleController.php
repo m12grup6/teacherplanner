@@ -47,23 +47,24 @@ class ScheduleController extends AbstractController
     }
 
 
-    /**
-     * @Route("/generateSchedule", name="app_schedule")
-    */
-
-    function generateSchedule(){
+    /*public function generateSchedule(){
         $proposedSchedule= generateProposedSchedule();
         $finalSchedule= validateProposedSchedule($proposedSchedule);
     
         while (is_null($finalSchedule)){
-            $proposedSchedule = createProposedSchedule();
+            $proposedSchedule= generateProposedSchedule();
             $finalSchedule= validateProposedSchedule($proposedSchedule);
         }
        
         return $finalSchedule;
-    }
+    }*/
 
     
+    //metodos a mover al repository?
+
+    /**
+     * @Route("/generateSchedule", name="app_schedule")
+    */
     public function generateProposedSchedule(){
         $entityManager = $this->getDoctrine()->getManager();
         $courses = $entityManager->getRepository(Course::class)->findAll();
@@ -75,6 +76,11 @@ class ScheduleController extends AbstractController
         $teacher3 = $entityManager->getRepository(User::class)->find(3);
         $teacher4 = $entityManager->getRepository(User::class)->find(4);
 
+        //$subject = $entityManager->getRepository(Subject::class)->find(13);
+        //var_dump($subject);
+
+        $schedule = new Schedule();
+
         foreach ($courses as $c){
             $course_id = $c->getId();
             $courseSubjects = $this->getDoctrine()
@@ -82,13 +88,15 @@ class ScheduleController extends AbstractController
             ->findBySubjectsByCourseId($course_id);
             
             $arrLength = count($courseSubjects);
+            
             for ($i = 0; $i < $arrLength; $i++) {
-                $subject = $entityManager->getRepository(Subject::class)->find($i);
                 $subject_id = $courseSubjects[$i]['id'];
                 $subject_hours_week = $courseSubjects[$i]['hours_week'];
+                $subject = $entityManager->getRepository(Subject::class)->find($subject_id);
+                
 
                 //Conseguir profesores por subject id --> TO DO --> crear un metodo
-                $teacher = "";
+                
                 switch ($subject_id) {
                     case 4:
                         $teacher = $teacher1;
@@ -102,23 +110,19 @@ class ScheduleController extends AbstractController
                     case 10:
                         $teacher = $teacher4;
                         break;
+                    default:
+                        $teacher = $teacher4;
+                        break;
                 }
-                return $teacher;
-                
+                                
                 for ($j = 0; $j < $subject_hours_week; $j++) {
                     $day=array_rand(DAYS,1);
                     $hour=array_rand(TIMETABLE,1);
                     
-                    $schedule = new Schedule();
                     $schedule->setDay($day);
                     $schedule->setHour($hour);
                     $schedule->setTeacher($teacher);
                     $schedule->setSubject($subject);
-
-                    echo "dia al azar = $day   ";
-                    echo "hora al azar = $hour   ";
-                    echo "teacher = $teacher   ";
-                    echo "subject = $subject   ";
                     
                     $proposal[$k] = $schedule;
                     $k++;
@@ -126,9 +130,12 @@ class ScheduleController extends AbstractController
             }
         }
         
+        $proposedSchedule = (object) $proposal;
+        //$proposedSchedule = json_decode(json_encode($proposal), FALSE);
+        //$items = json_decode($contents, true);
         echo "Propuesta generada     ";
-        var_dump($proposal);
-        //return $proposal; 
+        //var_dump($proposal);
+        return $proposedSchedule; 
         
     }
 
