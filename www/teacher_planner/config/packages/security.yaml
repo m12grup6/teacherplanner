@@ -37,17 +37,17 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/subjects, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/subjects/add, roles: ROLE_ADMIN }
-        - { path: ^/subjects/delete, roles: ROLE_ADMIN }
-        - { path: ^/subjects/edit, roles: ROLE_ADMIN }
-        - { path: ^/courses, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/courses/add, roles: ROLE_ADMIN }
-        - { path: ^/courses/delete, roles: ROLE_ADMIN }
-        - { path: ^/courses/edit, roles: ROLE_ADMIN }
-        - { path: ^/teachers, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path: ^/teachers/add, roles: ROLE_ADMIN }
-        - { path: ^/teachers/delete, roles: ROLE_ADMIN }
-        - { path: ^/teachers/edit, roles: ROLE_ADMIN }
+        #- { path: ^/subjects, roles: [ROLE_ADMIN, ROLE_USER] }
+       #- { path: ^/subjects/add, roles: ROLE_ADMIN }
+       # - { path: ^/subjects/delete, roles: ROLE_ADMIN }
+       # - { path: ^/subjects/edit, roles: ROLE_ADMIN }
+      #  - { path: ^/courses, roles: [ROLE_ADMIN, ROLE_USER] }
+      # - { path: ^/courses/add, roles: ROLE_ADMIN }
+      #  - { path: ^/courses/delete, roles: ROLE_ADMIN }
+      #  - { path: ^/courses/edit, roles: ROLE_ADMIN }
+      #  - { path: ^/teachers, roles: [ROLE_ADMIN, ROLE_USER] }
+      #  - { path: ^/teachers/add, roles: ROLE_ADMIN }
+       # - { path: ^/teachers/delete, roles: ROLE_ADMIN }
+      #  - { path: ^/teachers/edit, roles: ROLE_ADMIN }
  
         

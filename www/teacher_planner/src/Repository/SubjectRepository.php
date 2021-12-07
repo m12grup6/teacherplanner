@@ -52,9 +52,9 @@ class SubjectRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT s.name
+            'SELECT s.id, s.name, s.hours_week
             FROM App:Subject s
-            WHERE s.course_id = :id'
+            WHERE s.course = :id'
         )->setParameter('id', $id);
 
         // returns an array of subjects objects
