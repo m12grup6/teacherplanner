@@ -18,8 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-define ('DAYS', array ('Dilluns','Dimarts','Dimecres','Dijous','Divendres'));
-define ('TIMETABLE', array ('8-9','9-10','10-11','11-12','12-13','13-14'));
+define('DAYS', array('Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres'));
+define('TIMETABLE', array('8-9', '9-10', '10-11', '11-12', '12-13', '13-14'));
 
 
 /**
@@ -34,6 +34,7 @@ class ScheduleController extends AbstractController
         $this->subjectRepository = $subjectRepository;
         $this->entityManager = $entityManager;
     }
+
     /**
      * @Route("/build", name="app_buildSchedule")
      */
@@ -43,7 +44,32 @@ class ScheduleController extends AbstractController
         $allCourses = $entityManager->getRepository(Course::class)->findAll();
         $allSubjects = $entityManager->getRepository(Subject::class)->findAll();
         $allTeachers = $entityManager->getRepository(User::class)->findByRoleField('ROLE_USER');
+
+        $franja = array(
+            'dia' => 'Dilluns',
+            'hora_inici' => '10:00',
+            'hora_fi' => '11:00'
+        );
+        
+        dump($this->testTeacherConstraints($franja, $allTeachers[0]->getTeacherConstraints()));
+
         return $this->redirectToRoute('app_getCourses');
+    }
+
+    // Funció que retorna true si la franja és dins d'una restricció horària
+    public function testTeacherConstraints(array $franja, array $constraints)
+    {
+        $constraintsOfTeacher = array();
+        foreach($constraints as $constraint) {
+            $constraintsOfTeacher[$constraint['dia']][] = array('hora_inici' => $constraint['hora_inici'], 'hora_fi' => $constraint['hora_fi']);
+        }
+
+        foreach($constraintsOfTeacher[$franja['dia']] as $constraintsDelDia){
+            if(new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_inici']) >= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_inici']) && new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_fi']) <= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_fi'])){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -59,17 +85,18 @@ class ScheduleController extends AbstractController
         return $finalSchedule;
     }*/
 
-    
+
     //metodos a mover al repository?
 
     /**
      * @Route("/generateSchedule", name="app_schedule")
-    */
-    public function generateProposedSchedule(){
+     */
+    public function generateProposedSchedule()
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $courses = $entityManager->getRepository(Course::class)->findAll();
         $proposal = array();
-        $k=0;
+        $k = 0;
 
         $teacher1 = $entityManager->getRepository(User::class)->find(1);
         $teacher2 = $entityManager->getRepository(User::class)->find(2);
@@ -81,22 +108,22 @@ class ScheduleController extends AbstractController
 
         $schedule = new Schedule();
 
-        foreach ($courses as $c){
+        foreach ($courses as $c) {
             $course_id = $c->getId();
             $courseSubjects = $this->getDoctrine()
-            ->getRepository(Subject::class)
-            ->findBySubjectsByCourseId($course_id);
-            
+                ->getRepository(Subject::class)
+                ->findBySubjectsByCourseId($course_id);
+
             $arrLength = count($courseSubjects);
-            
+
             for ($i = 0; $i < $arrLength; $i++) {
                 $subject_id = $courseSubjects[$i]['id'];
                 $subject_hours_week = $courseSubjects[$i]['hours_week'];
                 $subject = $entityManager->getRepository(Subject::class)->find($subject_id);
-                
+
 
                 //Conseguir profesores por subject id --> TO DO --> crear un metodo
-                
+
                 switch ($subject_id) {
                     case 4:
                         $teacher = $teacher1;
@@ -114,33 +141,33 @@ class ScheduleController extends AbstractController
                         $teacher = $teacher4;
                         break;
                 }
-                                
+
                 for ($j = 0; $j < $subject_hours_week; $j++) {
-                    $day=array_rand(DAYS,1);
-                    $hour=array_rand(TIMETABLE,1);
-                    
+                    $day = array_rand(DAYS, 1);
+                    $hour = array_rand(TIMETABLE, 1);
+
                     $schedule->setDay($day);
                     $schedule->setHour($hour);
                     $schedule->setTeacher($teacher);
                     $schedule->setSubject($subject);
-                    
+
                     $proposal[$k] = $schedule;
                     $k++;
                 }
             }
         }
-        
+
         $proposedSchedule = (object) $proposal;
         //$proposedSchedule = json_decode(json_encode($proposal), FALSE);
         //$items = json_decode($contents, true);
         echo "Propuesta generada     ";
         //var_dump($proposal);
-        return $proposedSchedule; 
-        
+        return $proposedSchedule;
     }
 
 
-    public function validateProposedSchedule($proposal){
+    public function validateProposedSchedule($proposal)
+    {
         $arrLength = count($proposal);
 
         $teacher1 = $entityManager->getRepository(User::class)->find(1);
@@ -152,14 +179,14 @@ class ScheduleController extends AbstractController
             $dayAssigned = $propuesta[$i]['day'];
             $hourAssigned = $propuesta[$i]['hour'];
             $teacherAssigned = $proposal[$i]['teacher'];
-            
+
             echo "Posicion array = $i    ";
             echo "Teacher = $teacherAssigned    ";
             echo "Dia = $dayAssigned   ";
             echo "Hora = $hourAssigned   ";
 
             //obtener restricciones del teacher.
-          
+
             if ($teacherAssigned == $teacher1) {
                 $restrictionDay = 'Dimecres';
                 $restrictionHour = '9-10';
@@ -167,7 +194,7 @@ class ScheduleController extends AbstractController
                 $restrictionDay = 'Dijous';
                 $restrictionHour = '9-10';
             }
-            
+
             //Comparar si las restricciones del teacher son incompatibles con el horario propuesto
             if ($restrictionDay == $dayAssigned && $restrictionHour == $hourAssigned) {
                 echo "Restricción = $restrictionDay   ";
@@ -180,6 +207,6 @@ class ScheduleController extends AbstractController
                 break;
             }
         }
-        return $proposal; 
-    }   
+        return $proposal;
+    }
 }
