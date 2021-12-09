@@ -123,17 +123,13 @@ class ScheduleController extends AbstractController
                 $subject_hours_week = $courseSubjects[$i]['hours_week'];
                 $subject = $entityManager->getRepository(Subject::class)->find($subject_id);
 
-                //Conseguir profesores por subject id --> TO DO --> crear un metodo
+                //TO DO - Conseguir profesores por subject id --> TO DO --> crear un metodo
                 $teacher = $this->getTeacherBySubjectId($subject_id);
+                //TO DO - Conseguir restricciones profes
 
                 for ($j = 0; $j < $subject_hours_week; $j++) {
                     $dayRandom=array_rand(DAYS,1);
                     $hourRandom=array_rand(TIMETABLE,1);
-
-                    echo "Dia = $dayRandom  ";
-                    echo "Hora = $hourRandom  ";
-                    echo "Disponibilidad =";
-                    var_dump($scheduleAvailability[$dayRandom][$hourRandom]);
 
                     while ($scheduleAvailability[$dayRandom][$hourRandom] === false){  // && TO DO agregar check restricciones profes
                         $dayRandom=array_rand(DAYS,1);
@@ -142,7 +138,6 @@ class ScheduleController extends AbstractController
 
                     $day = DAYS[$dayRandom];
                     $hour = TIMETABLE[$hourRandom];
-
 
                     $schedule = new Schedule();
                     $schedule->setDay($day);
