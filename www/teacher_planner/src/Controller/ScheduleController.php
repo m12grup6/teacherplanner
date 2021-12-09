@@ -1,4 +1,5 @@
 <?php
+//ini_set('memory_limit','-1');
 
 namespace App\Controller;
 
@@ -18,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-define ('DAYS', array ('Dilluns','Dimarts','Dimecres','Dijous','Divendres'));
-define ('TIMETABLE', array ('8-9','9-10','10-11','11-12','12-13','13-14'));
+define('DAYS', array('Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres'));
+define('TIMETABLE', array('8-9', '9-10', '10-11', '11-12', '12-13', '13-14'));
 
 
 /**
@@ -43,143 +44,156 @@ class ScheduleController extends AbstractController
         $allCourses = $entityManager->getRepository(Course::class)->findAll();
         $allSubjects = $entityManager->getRepository(Subject::class)->findAll();
         $allTeachers = $entityManager->getRepository(User::class)->findByRoleField('ROLE_USER');
+
+        $franja = array(
+            'dia' => 'Dilluns',
+            'hora_inici' => '10:00',
+            'hora_fi' => '11:00'
+        );
+
+        dump($this->testTeacherConstraints($franja, $allTeachers[0]->getTeacherConstraints()));
+
         return $this->redirectToRoute('app_getCourses');
     }
-
-
-    /*public function generateSchedule(){
-        $proposedSchedule= generateProposedSchedule();
-        $finalSchedule= validateProposedSchedule($proposedSchedule);
-    
-        while (is_null($finalSchedule)){
-            $proposedSchedule= generateProposedSchedule();
-            $finalSchedule= validateProposedSchedule($proposedSchedule);
-        }
-       
-        return $finalSchedule;
-    }*/
-
-    
-    //metodos a mover al repository?
 
     /**
      * @Route("/generateSchedule", name="app_schedule")
     */
-    public function generateProposedSchedule(){
+
+    public function generateSchedule(){
+        $proposedSchedule= $this->generateProposedSchedule();
+
+        return $this->render('course/showSchedule.html.twig', [
+            'schedule' => $proposedSchedule,
+        ]);
+    }
+
+    public function generateProposedSchedule(): array{
         $entityManager = $this->getDoctrine()->getManager();
         $courses = $entityManager->getRepository(Course::class)->findAll();
-        $proposal = array();
+        $proposal = [];
         $k=0;
+        $scheduleAvailability = array (
+            array ('Dilluns','Dimarts','Dimecres','Dijous','Divendres'),
+            array ('8-9','9-10','10-11','11-12','12-13','13-14'),
+        );
 
-        $teacher1 = $entityManager->getRepository(User::class)->find(1);
-        $teacher2 = $entityManager->getRepository(User::class)->find(2);
-        $teacher3 = $entityManager->getRepository(User::class)->find(3);
-        $teacher4 = $entityManager->getRepository(User::class)->find(4);
+        $scheduleAvailability[0][0] = true;
+        $scheduleAvailability[0][1] = true;
+        $scheduleAvailability[0][2] = true;
+        $scheduleAvailability[0][3] = true;
+        $scheduleAvailability[0][4] = true;
+        $scheduleAvailability[0][5] = true;
+        $scheduleAvailability[1][0] = true;
+        $scheduleAvailability[1][1] = true;
+        $scheduleAvailability[1][2] = true;
+        $scheduleAvailability[1][3] = true;
+        $scheduleAvailability[1][4] = true;
+        $scheduleAvailability[1][5] = true;
+        $scheduleAvailability[2][0] = true;
+        $scheduleAvailability[2][1] = true;
+        $scheduleAvailability[2][2] = true;
+        $scheduleAvailability[2][3] = true;
+        $scheduleAvailability[2][4] = true;
+        $scheduleAvailability[2][5] = true;
+        $scheduleAvailability[3][0] = true;
+        $scheduleAvailability[3][1] = true;
+        $scheduleAvailability[3][2] = true;
+        $scheduleAvailability[3][3] = true;
+        $scheduleAvailability[3][4] = true;
+        $scheduleAvailability[3][5] = true;
+        $scheduleAvailability[4][0] = true;
+        $scheduleAvailability[4][1] = true;
+        $scheduleAvailability[4][2] = true;
+        $scheduleAvailability[4][3] = true;
+        $scheduleAvailability[4][4] = true;
+        $scheduleAvailability[4][5] = true;
 
-        //$subject = $entityManager->getRepository(Subject::class)->find(13);
-        //var_dump($subject);
-
-        $schedule = new Schedule();
 
         foreach ($courses as $c){
             $course_id = $c->getId();
             $courseSubjects = $this->getDoctrine()
-            ->getRepository(Subject::class)
-            ->findBySubjectsByCourseId($course_id);
-            
+                ->getRepository(Subject::class)
+                ->findBySubjectsByCourseId($course_id);
+
             $arrLength = count($courseSubjects);
-            
+
             for ($i = 0; $i < $arrLength; $i++) {
                 $subject_id = $courseSubjects[$i]['id'];
                 $subject_hours_week = $courseSubjects[$i]['hours_week'];
                 $subject = $entityManager->getRepository(Subject::class)->find($subject_id);
-                
 
                 //Conseguir profesores por subject id --> TO DO --> crear un metodo
-                
-                switch ($subject_id) {
-                    case 4:
-                        $teacher = $teacher1;
-                        break;
-                    case 7:
-                        $teacher = $teacher2;
-                        break;
-                    case 8:
-                        $teacher = $teacher3;
-                        break;
-                    case 10:
-                        $teacher = $teacher4;
-                        break;
-                    default:
-                        $teacher = $teacher4;
-                        break;
-                }
-                                
+                $teacher = $this->getTeacherBySubjectId($subject_id);
+
                 for ($j = 0; $j < $subject_hours_week; $j++) {
-                    $day=array_rand(DAYS,1);
-                    $hour=array_rand(TIMETABLE,1);
-                    
+                    $dayRandom=array_rand(DAYS,1);
+                    $hourRandom=array_rand(TIMETABLE,1);
+
+                    echo "Dia = $dayRandom  ";
+                    echo "Hora = $hourRandom  ";
+                    echo "Disponibilidad =";
+                    var_dump($scheduleAvailability[$dayRandom][$hourRandom]);
+
+                    while ($scheduleAvailability[$dayRandom][$hourRandom] === false){  // && TO DO agregar check restricciones profes
+                        $dayRandom=array_rand(DAYS,1);
+                        $hourRandom=array_rand(TIMETABLE,1);
+                    }
+
+                    $day = DAYS[$dayRandom];
+                    $hour = TIMETABLE[$hourRandom];
+
+
+                    $schedule = new Schedule();
                     $schedule->setDay($day);
                     $schedule->setHour($hour);
                     $schedule->setTeacher($teacher);
                     $schedule->setSubject($subject);
-                    
+                    $scheduleAvailability[$dayRandom][$hourRandom] = false;
+
                     $proposal[$k] = $schedule;
                     $k++;
                 }
             }
         }
-        
-        $proposedSchedule = (object) $proposal;
-        //$proposedSchedule = json_decode(json_encode($proposal), FALSE);
-        //$items = json_decode($contents, true);
-        echo "Propuesta generada     ";
-        //var_dump($proposal);
-        return $proposedSchedule; 
-        
+
+        return $proposal;
     }
 
+    //TODO - Pendiente de codificar. De momento es un mock
+    public function getTeacherBySubjectId ($id){
+        $entityManager = $this->getDoctrine()->getManager();
 
-    public function validateProposedSchedule($proposal){
-        $arrLength = count($proposal);
-
-        $teacher1 = $entityManager->getRepository(User::class)->find(1);
-        $teacher2 = $entityManager->getRepository(User::class)->find(2);
-        $teacher3 = $entityManager->getRepository(User::class)->find(3);
-        $teacher4 = $entityManager->getRepository(User::class)->find(4);
-
-        for ($i = 0; $i < $arrLength; $i++) {
-            $dayAssigned = $propuesta[$i]['day'];
-            $hourAssigned = $propuesta[$i]['hour'];
-            $teacherAssigned = $proposal[$i]['teacher'];
-            
-            echo "Posicion array = $i    ";
-            echo "Teacher = $teacherAssigned    ";
-            echo "Dia = $dayAssigned   ";
-            echo "Hora = $hourAssigned   ";
-
-            //obtener restricciones del teacher.
-          
-            if ($teacherAssigned == $teacher1) {
-                $restrictionDay = 'Dimecres';
-                $restrictionHour = '9-10';
-            } else {
-                $restrictionDay = 'Dijous';
-                $restrictionHour = '9-10';
-            }
-            
-            //Comparar si las restricciones del teacher son incompatibles con el horario propuesto
-            if ($restrictionDay == $dayAssigned && $restrictionHour == $hourAssigned) {
-                echo "Restricción = $restrictionDay   ";
-                echo "Dia = $dayAssigned   ";
-                echo "Restricción = $restrictionHour   ";
-                echo "Dia = $hourAssigned   ";
-
-                echo "Incompatibilidad. Crear otro horario     ";
-                unset($proposal);
+        switch ($id) {
+            case 4:
+                $teacher = $entityManager->getRepository(User::class)->find(1);
                 break;
+            case 7:
+                $teacher = $entityManager->getRepository(User::class)->find(2);
+                break;
+            case 8:
+                $teacher = $entityManager->getRepository(User::class)->find(3);
+                break;
+            default:
+                $teacher = $entityManager->getRepository(User::class)->find(4);
+                break;
+        }
+        return $teacher;
+    }
+
+    // Funció que retorna true si la franja és dins d'una restricció horària
+    public function testTeacherConstraints(array $franja, array $constraints)
+    {
+        $constraintsOfTeacher = array();
+        foreach($constraints as $constraint) {
+            $constraintsOfTeacher[$constraint['dia']][] = array('hora_inici' => $constraint['hora_inici'], 'hora_fi' => $constraint['hora_fi']);
+        }
+
+        foreach($constraintsOfTeacher[$franja['dia']] as $constraintsDelDia){
+            if(new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_inici']) >= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_inici']) && new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_fi']) <= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_fi'])){
+                return true;
             }
         }
-        return $proposal; 
-    }   
+        return false;
+    }
 }
