@@ -1,3 +1,4 @@
+/*
 let restrictions = document.getElementsByClassName('deleteRestriction');
 
 for (let restriction of restrictions) {
@@ -14,3 +15,4 @@ for (let restriction of restrictions) {
         xhttp.send();
     });
 }
+*/
