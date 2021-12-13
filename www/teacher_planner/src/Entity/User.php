@@ -68,9 +68,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $teaching_hours;
 
     /**
-     * @ORM\OneToMany(targetEntity=Constraint::class, mappedBy="user")
+     * @ORM\Column(type="json", nullable=true)
      */
-    private $constraints;
+    private $teacher_constraints = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=Schedule::class, mappedBy="teacher")
+     */
+    private $schedules;
 
     /**
      * @ORM\ManyToMany(targetEntity=Subject::class, inversedBy="users")
@@ -232,30 +237,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Constraint[]
-     */
-    public function getConstraints(): Collection
+    public function getTeacherConstraints(): ?array
     {
-        return $this->constraints;
+        return $this->teacher_constraints;
     }
 
-    public function addConstraint(Constraint $constraint): self
+    public function setTeacherConstraints(?array $teacher_constraints): self
     {
-        if (!$this->constraints->contains($constraint)) {
-            $this->constraints[] = $constraint;
-            $constraint->setUser($this);
+        $this->teacher_constraints = $teacher_constraints;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedule $schedule): self
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules[] = $schedule;
+            $schedule->setTeacher($this);
         }
 
         return $this;
     }
 
-    public function removeConstraint(Constraint $constraint): self
+    public function removeSchedule(Schedule $schedule): self
     {
-        if ($this->constraints->removeElement($constraint)) {
+        if ($this->schedules->removeElement($schedule)) {
             // set the owning side to null (unless already changed)
-            if ($constraint->getUser() === $this) {
-                $constraint->setUser(null);
+            if ($schedule->getTeacher() === $this) {
+                $schedule->setTeacher(null);
             }
         }
 
