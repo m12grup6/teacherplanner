@@ -27,20 +27,21 @@
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
+            {% if allTeachers | length > 0 %}
                 {% for teacher in allTeachers %}
-                    {% if teacher %}
+                    {% if 'ROLE_USER' in teacher.roles %}
                         <li class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">{{ teacher.id }}</div>
                                 <div class="col mb-0">{{ teacher.name }}</div>
                                 <div class="col-auto end-0">
-                                    <a class="text-decoration-none text-white" title="Ver Horarios"
+                                    <a class="text-decoration-none text-white" title="Veure Horaris"
                                        href="{{ path('app_showConstraint',{'id' : teacher.id }) }}">
                                         <button class="btn btn-xs btn-primary">
                                             &#8986;
                                         </button>
                                     </a>
-                                    <a class="text-decoration-none text-white" title="Ver detalles"
+                                    <a class="text-decoration-none text-white" title="Veure detalls"
                                        href="{{ path('app_detailTeacher',{'id' : teacher.id }) }}">
                                         <button class="btn btn-xs btn-primary">
                                             &#128196;
@@ -49,13 +50,14 @@
                                 </div>
                             </div>
                         </li>
-                    {% else %}
-                        <li class="list-group-item">
-                            No n'hi ha
-                        </li>
                     {% endif %}
                 {% endfor %}
             </ul>
+            {% else %}
+                <li class="list-group-item">
+                    No n'hi han
+                </li>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

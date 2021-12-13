@@ -72,9 +72,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $constraints;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Subject::class, inversedBy="users")
+     */
+    private $subjects;
+
     public function __construct()
     {
-        $this->constraints = new ArrayCollection();
+        $this->schedules = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -252,6 +258,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $constraint->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Subject[]
+     */
+    public function getSubjects(): Collection
+    {
+        return $this->subjects;
+    }
+
+    public function addSubject(Subject $subject): self
+    {
+        if (!$this->subjects->contains($subject)) {
+            $this->subjects[] = $subject;
+        }
+
+        return $this;
+    }
+
+    public function removeSubject(Subject $subject): self
+    {
+        $this->subjects->removeElement($subject);
 
         return $this;
     }

@@ -44,9 +44,15 @@ class Subject
      */
     private $schedules;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="subjects")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     /**
@@ -120,6 +126,33 @@ class Subject
             if ($schedule->getSubject() === $this) {
                 $schedule->setSubject(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeSubject($this);
         }
 
         return $this;
