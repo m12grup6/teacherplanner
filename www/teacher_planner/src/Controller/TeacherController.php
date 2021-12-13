@@ -163,7 +163,7 @@ class TeacherController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash('success', 'Restricció afegida correctament');
 
-            return $this->redirectToRoute('app_showConstraint', array('id' => $teacher->getId()));
+            return $this->redirectToRoute('app_showConstraints', array('id' => $teacher->getId()));
         }
 
         return $this->render('teacher/addConstraint.html.twig', [
@@ -173,19 +173,14 @@ class TeacherController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/constraints", name="app_showConstraint")
+     * @Route("/{id}/constraints", name="app_showConstraints")
      * Mètode per mostrar franja de restricció al professor
      * @param Integer $id del teacher a mostrar.
      */
-    public function showConstraint(User $teacher, Request $request)
+    public function showConstraints(User $teacher, Request $request)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $allConstraints = $entityManager->getRepository(Constraint::class)->findBy(array('user' => $teacher->getId()));
         return $this->render('teacher/allConstraints.html.twig', [
-            'teacher' => $teacher,
-            array(
-                'constraints' => $allConstraints
-            )
+            'constraints' => $teacher->getTeacherConstraints()
         ]);
     }
 }
