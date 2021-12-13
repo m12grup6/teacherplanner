@@ -53,18 +53,6 @@
                             No n'hi ha
                         </li>
                     {% endif %}
-                {% if teacher %}
-                    <li class="list-group-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">{{ teacher.id }}</div>
-                            <div class="col-auto">{{ teacher.name }}</div>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="list-group-item">
-                        No n'hi ha
-                    </li>
-                {% endif %}
                 {% endfor %}
             </ul>
         </div>
