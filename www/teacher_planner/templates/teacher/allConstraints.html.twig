@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}Restriccions docents{% endblock %}
 {% block sectiontitle %}Restriccions docents{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('ajax') }}
+{% endblock %}
 {% block body %}
     <div class="card card-bleed shadow-light-lg">
         <div class="card-header">
@@ -19,30 +22,50 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead>
-                <th>Día</th>
-                <th>Hora Entrada</th>
-                <th>Hora Salida</th>
-                </thead>
-                {% for constraint in teacher.teacherconstraints %}
-                    <tr>
-                        <td>
-                            <div class="col-auto">{{ constraint['dia'] }}</div>
-                        </td>
-                        <td>
-                            <div class="col-auto">{{ constraint['hora_inici'] }}</div>
-                        </td>
-                        <td>
-                            <div class="col-auto">{{ constraint['hora_fi'] }}</div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+            {% if teacher.constraints is empty %}
+                <h4 class="mb-0">
+                    Aquest Professor no té restirccions encara
+                </h4>
+                <br>
+            {% else %}
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <th>Día</th>
+                    <th>Hora Entrada</th>
+                    <th>Hora Salida</th>
+                    </thead>
+                    {% for constraint in teacher.constraints %}
+                        <tr id="row-{{ constraint.id }}">
+                            <td>
+                                <div class="col-auto">{{ constraint.getWeekDay }}</div>
+                            </td>
+                            <td>
+                                <div class="col-auto">{{ constraint.getStartTime | date('H:i:s') }}</div>
+                            </td>
+                            <td>
+                                <div class="col-auto">{{ constraint.getEndTime | date('H:i:s') }}</div>
+                            </td>
+                            <td>
+                                <div class="col-auto">
+                                    <button class="btn btn-xs btn-danger deleteRestriction" data-id="{{ constraint.id }}">
+                                        Esborrar restricció &#128465;
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
             <a class="text-decoration-none text-white"
-               href="{{ path('app_addConstraint',{'id' : teacher.id }) }}">
+               href="{{ path('app_addConstraint', {'id' : teacher.id }) }}">
                 <button class="btn btn-xs btn-primary">
                     Afegir restricció &#8986;
+                </button>
+            </a>
+            <a class="text-decoration-none text-white"
+            href="{{ path('app_detailTeacher',{'id' : teacher.id }) }}">
+                <button class="btn btn-xs btn-primary">
+                    Tornar &#x21a9;
                 </button>
             </a>
         </div>

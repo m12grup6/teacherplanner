@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Constraint;
 use App\Entity\User;
 use App\Form\TeacherType;
 use App\Form\TeacherConstraintType;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -17,7 +19,6 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @Route("/teachers")
  */
-
 class TeacherController extends AbstractController
 {
 
@@ -25,7 +26,7 @@ class TeacherController extends AbstractController
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
-        $this->passwordHasher= $passwordHasher;
+        $this->passwordHasher = $passwordHasher;
     }
 
 
@@ -142,38 +143,22 @@ class TeacherController extends AbstractController
         $form = $this->createForm(TeacherConstraintType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('hora_inici')->getData() instanceof \Datetime) {
-                $horaInici = $form->get('hora_inici')->getData()->format('H:i:s');
-            }
-            if ($form->get('hora_fi')->getData() instanceof \Datetime) {
-                $horaFi = $form->get('hora_fi')->getData()->format('H:i:s');
-            }
-            $dia = $this->translateDay($form->get('dia')->getData());
-            if (is_array($teacher->getTeacherConstraints())) {
-                $newConstraint = $teacher->getTeacherConstraints();
-            } else {
-                $newConstraint = array();
-            }
-            $newConstraint[] = array(
-                'dia' => $dia,
-                'hora_inici' => $horaInici,
-                'hora_fi' => $horaFi
-            );
-            $teacher->setTeacherConstraints($newConstraint);
-
+            $newConstraint = $this->setConstraintData($form, $teacher);
+            $this->entityManager->persist($newConstraint);
             $this->entityManager->flush();
             $this->addFlash('success', 'Restricció afegida correctament');
 
-            return $this->redirectToRoute('app_detailTeacher', array('id' => $teacher->getId()));
+            return $this->redirectToRoute('app_showConstraint', array('id' => $teacher->getId()));
         }
 
         return $this->render('teacher/addConstraint.html.twig', [
             'controller_name' => 'TeacherController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'teacher_id' => $teacher->getId()
         ]);
     }
 
-     /**
+    /**
      * @Route("/{id}/constraints/show", name="app_showConstraint")
      * Mètode per mostrar franja de restricció al professor
      * @param Integer $id del teacher a mostrar.
@@ -181,12 +166,13 @@ class TeacherController extends AbstractController
     public function showConstraint(User $teacher, Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $allConstraints = $entityManager->getRepository(User::class)->findAll();
+        $allConstraints = $entityManager->getRepository(Constraint::class)->findBy(array('user' => $teacher->getId()));
         return $this->render('teacher/allConstraints.html.twig', [
-            'teacher' => $teacher
+            'teacher' => $teacher,
+            array(
+                'constraints' => $allConstraints
+            )
         ]);
-
-
     }
 
     private function translateDay($day)
@@ -210,6 +196,17 @@ class TeacherController extends AbstractController
                 break;
         }
         return $newDay;
+    }
+
+    private function setConstraintData($form, $teacher)
+    {
+        $constraint = new Constraint();
+        $dia = $this->translateDay($form->get('dia')->getData());
+        $constraint->setUser($teacher);
+        $constraint->setWeekDay($dia);
+        $constraint->setStartTime($form->get('hora_inici')->getData());
+        $constraint->setEndTime($form->get('hora_fi')->getData());
+        return $constraint;
     }
 
 }

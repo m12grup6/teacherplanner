@@ -22,7 +22,7 @@ final class Version20211201091222 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE subject ADD CONSTRAINT FK_FBCE3E7A591CC992 FOREIGN KEY (course_id) REFERENCES course (id)');
         $this->addSql('CREATE INDEX IDX_FBCE3E7A591CC992 ON subject (course_id)');
-        $this->addSql('ALTER TABLE user ADD teaching_hours INT DEFAULT NULL, ADD teacher_constraints JSON DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD teaching_hours INT DEFAULT NULL');    
     }
 
     public function down(Schema $schema): void

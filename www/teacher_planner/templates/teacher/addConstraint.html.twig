@@ -16,21 +16,30 @@
                 </div>
             </div>            
             <div class="row">
-                <div class="col" id="">
+                <div class="col">
                     {{ form_row(form.hora_inici, {'label': 'Hora inici'}) }}
                 </div>
             </div>
             <div class="row">
-                <div class="col" id="">
+                <div class="col">
                     {{ form_row(form.hora_fi, {'label': 'Hora fi'}) }}
                 </div>
             </div>
-            {{ form_row(form.submit, { 'label': 'Afegir' }) }}
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
+                    {{ form_row(form.submit, { 'label': 'Afegir' }) }}
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
+                    <a class="text-decoration-none text-white btn btn-xs btn-danger"
+                    href="{{ path('app_showConstraint',{'id' : teacher_id }) }}">
+                        Cancel·lar
+                    </a>
+                </div>
+            </div>
             {{ form_end(form) }}
         </div>
         <div class="col-6">
             <img src="{{ asset('images/Teaching-amico.png') }}" alt="..." class="img-fluid">
-        
         </div>
     </div>
 
