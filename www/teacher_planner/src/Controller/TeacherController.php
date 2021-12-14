@@ -183,4 +183,20 @@ class TeacherController extends AbstractController
             'constraints' => $teacher->getTeacherConstraints()
         ]);
     }
+
+    /**
+     * @Route("/{id}/constraints/delete/{idConstraint}", name="app_deleteConstraint")
+     * Mètode per esborrar franja de restricció al professor
+     * @param Integer $id id del teacher a editar.
+     * @param Integer $idConstraint id de la posició del array.
+     */
+    public function deleteConstraint(User $teacher, $idConstraint)
+    {
+        $constraints = $teacher->getTeacherConstraints();
+        unset($constraints[$idConstraint]);
+        $teacher->setTeacherConstraints($constraints);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_showConstraints', array('id' => $teacher->getId()));
+    }
 }
