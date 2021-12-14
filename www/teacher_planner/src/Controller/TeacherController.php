@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Constraint;
 use App\Entity\User;
 use App\Form\TeacherType;
 use App\Form\TeacherConstraintType;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -143,70 +141,46 @@ class TeacherController extends AbstractController
         $form = $this->createForm(TeacherConstraintType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $newConstraint = $this->setConstraintData($form, $teacher);
-            $this->entityManager->persist($newConstraint);
+            if ($form->get('hora_inici')->getData() instanceof \Datetime) {
+                $horaInici = $form->get('hora_inici')->getData()->format('H:i:s');
+            }
+            if ($form->get('hora_fi')->getData() instanceof \Datetime) {
+                $horaFi = $form->get('hora_fi')->getData()->format('H:i:s');
+            }
+            
+            if (is_array($teacher->getTeacherConstraints())) {
+                $newConstraint = $teacher->getTeacherConstraints();
+            } else {
+                $newConstraint = array();
+            }
+            $newConstraint[] = array(
+                'dia' => $form->get('dia')->getData(),
+                'hora_inici' => $horaInici,
+                'hora_fi' => $horaFi
+            );
+            $teacher->setTeacherConstraints($newConstraint);
+
             $this->entityManager->flush();
             $this->addFlash('success', 'Restricció afegida correctament');
 
-            return $this->redirectToRoute('app_showConstraint', array('id' => $teacher->getId()));
+            return $this->redirectToRoute('app_showConstraints', array('id' => $teacher->getId()));
         }
 
         return $this->render('teacher/addConstraint.html.twig', [
-            'controller_name' => 'TeacherController',
             'form' => $form->createView(),
             'teacher_id' => $teacher->getId()
         ]);
     }
 
     /**
-     * @Route("/{id}/constraints/show", name="app_showConstraint")
+     * @Route("/{id}/constraints", name="app_showConstraints")
      * Mètode per mostrar franja de restricció al professor
      * @param Integer $id del teacher a mostrar.
      */
-    public function showConstraint(User $teacher, Request $request)
+    public function showConstraints(User $teacher, Request $request)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $allConstraints = $entityManager->getRepository(Constraint::class)->findBy(array('user' => $teacher->getId()));
         return $this->render('teacher/allConstraints.html.twig', [
-            'teacher' => $teacher,
-            array(
-                'constraints' => $allConstraints
-            )
+            'constraints' => $teacher->getTeacherConstraints()
         ]);
     }
-
-    private function translateDay($day)
-    {
-        $newDay = $day;
-        switch ($day) {
-            case 'monday':
-                $newDay = "Dilluns";
-                break;
-            case 'tuesday':
-                $newDay = "Dimarts";
-                break;
-            case 'wednesday':
-                $newDay = "Dimecres";
-                break;
-            case 'thursday':
-                $newDay = "Dijous";
-                break;
-            case 'friday':
-                $newDay = "Divendres";
-                break;
-        }
-        return $newDay;
-    }
-
-    private function setConstraintData($form, $teacher)
-    {
-        $constraint = new Constraint();
-        $dia = $this->translateDay($form->get('dia')->getData());
-        $constraint->setUser($teacher);
-        $constraint->setWeekDay($dia);
-        $constraint->setStartTime($form->get('hora_inici')->getData());
-        $constraint->setEndTime($form->get('hora_fi')->getData());
-        return $constraint;
-    }
-
 }

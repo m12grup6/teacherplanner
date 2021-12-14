@@ -53,9 +53,8 @@ class CourseRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             'SELECT subject
-            FROM App\Entity\Subject s
-            WHERE course_id = :id'
-        )->setParameter('id', $id);
+            FROM App\Entity\Subject s'
+        );
 
         // returns an array of subjects objects
         return $query->getResult();
