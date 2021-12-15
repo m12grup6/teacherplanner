@@ -5,6 +5,10 @@ $dark: #1b2a4e;
 
 @import '~bootstrap';
 
+.dark-cell {
+    background-color: #f1f4f7 !important;
+}
+
 .list-group-item:hover {
     // cursor: pointer
 }
