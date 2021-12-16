@@ -80,6 +80,7 @@ class CourseController extends AbstractController
      * Mètode per borrar el curs passat per paràmetre
      * @param Integer $id id del curs a borrar.
      */
+// @Jaume: Trobo excepcions al intentar executar aquest mètode, retiro el botó fins revisar
     public function deleteCourse($id)
     {
         $entityManager = $this->getDoctrine()->getManager();
