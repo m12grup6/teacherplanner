@@ -163,12 +163,13 @@ class TeacherController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash('success', 'Restricció afegida correctament');
 
-            return $this->redirectToRoute('app_showConstraints', array('id' => $teacher->getId()));
+            return $this->redirectToRoute('app_detailTeacher', array('id' => $teacher->getId()));
         }
 
         return $this->render('teacher/addConstraint.html.twig', [
             'form' => $form->createView(),
-            'teacher_id' => $teacher->getId()
+            'teacher_id' => $teacher->getId(),
+            'teacher' => $teacher
         ]);
     }
 
@@ -197,6 +198,6 @@ class TeacherController extends AbstractController
         $teacher->setTeacherConstraints($constraints);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_showConstraints', array('id' => $teacher->getId()));
+        return $this->redirectToRoute('app_detailTeacher', array('id' => $teacher->getId()));
     }
 }
