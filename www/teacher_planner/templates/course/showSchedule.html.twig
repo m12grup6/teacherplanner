@@ -11,7 +11,7 @@
     <div class="table-responsive">
         <table class="table table-bordered text-center">
             <thead>
-                <tr class="bg-light">
+                <tr class="bg-white">
                     <th class="text-uppercase">Hora
                     </th>
                     {% for day in days %}                    
@@ -19,7 +19,7 @@
                     {% endfor %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
             {% for hour in timetable %}
                 <tr>
                     
@@ -37,7 +37,7 @@
                         </td>
                         {% endfor %}
                         {% if empty == true%} 
-                        <td class="p-3 dark-cell">
+                        <td class="p-3 bg-light">
                             <div class="p-1 rounded mb-1 text-white">&nbsp;</div>
                             <div class="text-secondary">&nbsp;</div>                              
                         </td>
