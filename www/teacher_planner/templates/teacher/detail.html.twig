@@ -64,7 +64,19 @@
                         {% for key, constraint in teacher.getTeacherConstraints %}
                             <li class="list-group-item">
                                 <div class="row align-items-center">
-                                    <div class="col-auto">{{ constraint.dia|capitalize }} de {{ date(constraint.hora_inici)| date('H') }} a {{ date(constraint.hora_fi)| date('H') }} </div>
+                                    <div class="col-auto">
+                                    {% if constraint.dia == 'monday' %}
+                                        Dilluns
+                                    {% elseif constraint.dia == 'tuesday' %}
+                                        Dimarts
+                                    {% elseif constraint.dia == 'wednesday' %}
+                                        Dimecres
+                                    {% elseif constraint.dia == 'thursday' %}
+                                        Dijous
+                                    {% elseif constraint.dia == 'friday' %}
+                                        Divendres
+                                    {% endif %}
+                                     de {{ date(constraint.hora_inici)| date('H') }} a {{ date(constraint.hora_fi)| date('H') }} </div>
                                     <div class="col-auto">
                                         <a href="{{ path('app_deleteConstraint',{id: teacher.id, idConstraint: key }) }}" class="text-decoration-none">
                                             <button class="col-auto btn btn-xs btn-danger">
