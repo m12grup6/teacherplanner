@@ -1,1 +1,1 @@
-composer install && npm install && npm run encore dev && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:schema:update --force && apache2-foreground
+composer install && npm install && npm run encore dev && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:schema:update --force && php bin/console --env=test doctrine:database:create --if-not-exists && php bin/console --env=test doctrine:schema:update --force && apache2-foreground
