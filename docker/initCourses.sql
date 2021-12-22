@@ -1,0 +1,10 @@
+REPLACE INTO course (id, name, cicle) VALUES (1, '1er', 'Primaria');
+REPLACE INTO course (id, name, cicle) VALUES (2, '2on', 'Primaria');
+REPLACE INTO course (id, name, cicle) VALUES (3, '3er', 'Primaria');
+REPLACE INTO course (id, name, cicle) VALUES (4, '4rt', 'Primaria');
+REPLACE INTO course (id, name, cicle) VALUES (5, '5è', 'Primaria');
+REPLACE INTO course (id, name, cicle) VALUES (6, '6è', 'Primaria');
+REPLACE INTO course (id, name, cicle) VALUES (7, '1er', 'Secundaria');
+REPLACE INTO course (id, name, cicle) VALUES (8, '2on', 'Secundaria');
+REPLACE INTO course (id, name, cicle) VALUES (9, '3er', 'Secundaria');
+REPLACE INTO course (id, name, cicle) VALUES (10, '4rt', 'Secundaria');
