@@ -39,7 +39,9 @@ class TeacherController extends AbstractController
         $form = $this->createForm(TeacherType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            dump($form['roles']->getData());
             $em = $this->getDoctrine()->getManager();
+            $user->setRoles($form['roles']->getData());
             $user->setIsActive(true);
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
@@ -68,7 +70,7 @@ class TeacherController extends AbstractController
     public function showTeachers()
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $allTeachers = $entityManager->getRepository(User::class)->findAll();
+        $allTeachers = $entityManager->getRepository(User::class)->findByRoleField('ROLE_USER');
         return $this->render('teacher/allTeachers.html.twig', [
             'allTeachers' => $allTeachers,
         ]);

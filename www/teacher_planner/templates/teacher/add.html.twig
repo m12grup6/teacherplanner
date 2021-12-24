@@ -11,6 +11,11 @@
             </div>
 
             <div class="row">
+                <div class="col" id="">
+                    {{ form_row(form.name, {'label': 'Nom'}) }}
+                </div>
+            </div>
+            <div class="row">
                 <div class="col">
                     {{ form_row(form.email, {'label': 'Email'}) }}
                 </div>
@@ -22,15 +27,15 @@
             </div>
             <div class="row">
                 <div class="col" id="">
-                    {{ form_row(form.name, {'label': 'Nom'}) }}
+                    {{ form_row(form.roles, {'label': 'Rol'}) }}
                 </div>
             </div>
             <div class="row">
                 <div class="col" id="">
-                    {{ form_row(form.roles, {'label': 'Rol'}) }}
+                    {{ form_row(form.teaching_hours, {'label': 'Hores disponibles'}) }}
                 </div>
-            </div>   
-           <div class="row">
+            </div> 
+            <div class="row">
                 <div class="col" id="">
                     {{ form_row(form.subjects, {'label': 'Assignatures'}) }}
                 </div>

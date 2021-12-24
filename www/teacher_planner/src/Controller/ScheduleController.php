@@ -58,24 +58,27 @@ class ScheduleController extends AbstractController
 
     /**
      * @Route("/generateSchedule", name="app_schedule")
-    */
+     */
 
-    public function generateSchedule(){
-        $proposedSchedule= $this->generateProposedSchedule();
+    public function generateSchedule()
+    {
+        $proposedSchedule = $this->generateProposedSchedule();
 
         return $this->render('course/showSchedule.html.twig', [
             'schedule' => $proposedSchedule,
         ]);
     }
 
-    public function generateProposedSchedule(): array{
+    public function generateProposedSchedule(): array
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $courses = $entityManager->getRepository(Course::class)->findAll();
+        $this->deleteSchedules();
         $proposal = [];
-        $k=0;
-        $scheduleAvailability = array (
-            array ('Dilluns','Dimarts','Dimecres','Dijous','Divendres'),
-            array ('8-9','9-10','10-11','11-12','12-13','13-14'),
+        $k = 0;
+        $scheduleAvailability = array(
+            array('Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres'),
+            array('8-9', '9-10', '10-11', '11-12', '12-13', '13-14'),
         );
 
         $scheduleAvailability[0][0] = true;
@@ -110,7 +113,7 @@ class ScheduleController extends AbstractController
         $scheduleAvailability[4][5] = true;
 
 
-        foreach ($courses as $c){
+        foreach ($courses as $c) {
             $course_id = $c->getId();
             $courseSubjects = $this->getDoctrine()
                 ->getRepository(Subject::class)
@@ -128,12 +131,12 @@ class ScheduleController extends AbstractController
                 //TO DO - Conseguir restricciones profes
 
                 for ($j = 0; $j < $subject_hours_week; $j++) {
-                    $dayRandom=array_rand(DAYS,1);
-                    $hourRandom=array_rand(TIMETABLE,1);
+                    $dayRandom = array_rand(DAYS, 1);
+                    $hourRandom = array_rand(TIMETABLE, 1);
 
-                    while ($scheduleAvailability[$dayRandom][$hourRandom] === false){  // && TO DO agregar check restricciones profes
-                        $dayRandom=array_rand(DAYS,1);
-                        $hourRandom=array_rand(TIMETABLE,1);
+                    while ($scheduleAvailability[$dayRandom][$hourRandom] === false) {  // && TO DO agregar check restricciones profes
+                        $dayRandom = array_rand(DAYS, 1);
+                        $hourRandom = array_rand(TIMETABLE, 1);
                     }
 
                     $day = DAYS[$dayRandom];
@@ -157,8 +160,20 @@ class ScheduleController extends AbstractController
         return $proposal;
     }
 
+    // Esborra els schedules actuals a la base de dades
+    public function deleteSchedules()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $schedules = $entityManager->getRepository(Schedule::class)->findAll();
+        foreach ($schedules as $scheduleObject) {
+            $entityManager->remove($scheduleObject);
+        }
+        $entityManager->flush();
+    }
+
     //TODO - Pendiente de codificar. De momento es un mock
-    public function getTeacherBySubjectId ($id){
+    public function getTeacherBySubjectId($id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         switch ($id) {
@@ -182,12 +197,12 @@ class ScheduleController extends AbstractController
     public function testTeacherConstraints(array $franja, array $constraints)
     {
         $constraintsOfTeacher = array();
-        foreach($constraints as $constraint) {
+        foreach ($constraints as $constraint) {
             $constraintsOfTeacher[$constraint['dia']][] = array('hora_inici' => $constraint['hora_inici'], 'hora_fi' => $constraint['hora_fi']);
         }
 
-        foreach($constraintsOfTeacher[$franja['dia']] as $constraintsDelDia){
-            if(new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_inici']) >= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_inici']) && new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_fi']) <= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_fi'])){
+        foreach ($constraintsOfTeacher[$franja['dia']] as $constraintsDelDia) {
+            if (new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_inici']) >= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_inici']) && new \DateTime(date('Y-m-d') . ' ' . $constraintsDelDia['hora_fi']) <= new \DateTime(date('Y-m-d') . ' ' . $franja['hora_fi'])) {
                 return true;
             }
         }
