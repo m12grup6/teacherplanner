@@ -32,12 +32,15 @@ class SubjectController extends AbstractController
     */
     public function addSubject(Request $request){
         $subject = new Subject();
-        $form = $this->createForm(SubjectType::class, $subject);
+        $form = $this->createForm(SubjectType::class, $subject,
+        array('selected_course_id' => $request->get('selected_course_id')));
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
             $subject->setName($form['name']->getData());
             $subject->setHoursWeek($form['hours_week']->getData());
+            $course = $subject->getCourse();
                                     
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -47,9 +50,8 @@ class SubjectController extends AbstractController
             // actually executes the action in the ddbb (in this case insert subject)
             $entityManager->flush();
             
-            //$course = $subject->getCourse();
-            //return $this->redirectToRoute('app_getCourses', ['id' => $course->getId()]);
-            return $this->redirectToRoute('app_getCourses');            
+            return $this->redirectToRoute('app_detailCourses', ['id' => $course->getId()]);
+            //return $this->redirectToRoute('app_getCourses');            
         }
 
         return $this->render('subject/add.html.twig', [
@@ -79,6 +81,7 @@ class SubjectController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
      
         $subject = $entityManager->getRepository(Subject::class)->find($id);
+        $course = $subject->getCourse();
 
         if (!$subject) {
             throw $this->createNotFoundException(
@@ -88,7 +91,7 @@ class SubjectController extends AbstractController
         $entityManager->remove($subject);
         $entityManager->flush();
         
-        return $this->redirectToRoute('app_getSubjects');
+        return $this->redirectToRoute('app_detailCourses', ['id' => $course->getId() ]);
     }
 
      /**

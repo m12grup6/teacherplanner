@@ -7,6 +7,9 @@ services:
     volumes:
       - ../www/teacher_planner:/var/www/html
       - ./000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./initCourses.sql:/usr/local/src/initCourses.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: ioc
     depends_on:
       - database
     restart: unless-stopped

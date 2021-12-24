@@ -1,50 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Restriccions docents{% endblock %}
-{% block sectiontitle %}Restriccions docents{% endblock %}
+{% block title %}Restriccions per al docent{% endblock %}
+{% block sectiontitle %}Restriccions per al docent{% endblock %}
 {% block body %}
-    <div class="card card-bleed shadow-light-lg">
-        <div class="card-header">
-            <div class="row align-items-center">
-                <div class="col">
-
-                    <!-- Heading -->
-                    <h4 class="mb-0">
-                        Restriccions Horaries del Professor {{ teacher.name }} (id: {{ teacher.id }})
-                    </h4>
-
-                </div>
-                <div class="col-auto">
-
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead>
-                <th>Día</th>
-                <th>Hora Entrada</th>
-                <th>Hora Salida</th>
-                </thead>
-                {% for constraint in teacher.teacherconstraints %}
-                    <tr>
-                        <td>
-                            <div class="col-auto">{{ constraint['dia'] }}</div>
-                        </td>
-                        <td>
-                            <div class="col-auto">{{ constraint['hora_inici'] }}</div>
-                        </td>
-                        <td>
-                            <div class="col-auto">{{ constraint['hora_fi'] }}</div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-            <a class="text-decoration-none text-white"
-               href="{{ path('app_addConstraint',{'id' : teacher.id }) }}">
-                <button class="btn btn-xs btn-primary">
-                    Afegir restricció &#8986;
-                </button>
-            </a>
-        </div>
-    </div>
+{{ dump() }}
 {% endblock %}

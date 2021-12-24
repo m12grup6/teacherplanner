@@ -14,9 +14,9 @@
 
                 </div>
                 <div class="col-auto">
-
+                
                 <!-- Button -->
-                <a class="text-decoration-none text-white" href="{{ path('app_addSubject') }}">
+                <a class="text-decoration-none text-white" href="{{ path('app_addSubject') }}/?selected_course_id={{ course.id }}">
                     <button class="btn btn-xs btn-primary">
                         Afegir
                     </button>
@@ -26,6 +26,7 @@
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
+            {% if course.getSubjects | length > 0 %}
                 {% for subject in course.getSubjects %}
                     <li class="list-group-item">
                         <div class="row align-items-center text-secondary">
@@ -40,11 +41,12 @@
                             </div>
                         </div>
                     </li>
-                {% else %}
-                    <li class="list-group-item">
-                        No n'hi ha
-                    </li>
                 {% endfor %}
+            {% else %}
+                <li class="list-group-item">
+                    No n'hi ha
+                </li>
+            {% endif %}
             </ul>
         </div>
     </div>

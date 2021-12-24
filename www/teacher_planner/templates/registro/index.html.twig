@@ -1,11 +1,39 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Formulari de registre{% endblock %}
-
+{% block title %}Registre{% endblock %}
+{% block sectiontitle %}Registre{% endblock %}
 {% block menu %}
 
 {% endblock %}
-
 {% block body %}
-{{ form(formulario) }}
+
+    <div class="row align-items-center justify-content-center gx-5">
+        <div class="col-4">
+            {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.name, {'label': 'Nom'}) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.password) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.email) }}
+                </div>
+            </div>
+            {{ form_row(form.submit, { 'label': 'Registre' }) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="col-5">
+            <img src="{{ asset('images/fillout-amico.png') }}" alt="..." class="img-fluid">
+        </div>
+    </div>
+
 {% endblock %}

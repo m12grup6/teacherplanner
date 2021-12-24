@@ -7,38 +7,39 @@
             <div class="row align-items-center">
                 <div class="col">
 
-                <!-- Heading -->
-                <h4 class="mb-0">
-                    Llista de Cursos
-                </h4>
+                    <!-- Heading -->
+                    <h4 class="mb-0">
+                        Llista de Cursos
+                    </h4>
 
                 </div>
                 <div class="col-auto">
 
-                <!-- Button -->
-                <button class="btn btn-xs btn-primary">
-                    <a class="text-decoration-none text-white" href="{{ path('app_addCourse') }}">Afegir</a>
-                </button>
+                    <!-- Button -->
+                    <button class="btn btn-xs btn-primary">
+                        <a class="text-decoration-none text-white" href="{{ path('app_addCourse') }}">Afegir</a>
+                    </button>
 
                 </div>
             </div>
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
+            {% if allCourses | length > 0 %}
                 {% for course in allCourses %}
                     <li class="list-group-item">
                         <a class="text-decoration-none text-secondary" href="{{ course.id }}">
                         <div class="row align-items-center">
-                            <div class="col-auto">{{ course.id }}</div>
-                            <div class="col-auto">{{ course.name }} de {{ course.cicle == 'primary' ? 'primària' : 'secundària' }}</div>
+                            <div class="col-auto">{{ course.name }} de {{ course.cicle == 'Primaria' ? 'Primària' : 'Secundària' }}</div>
                         </div>
                         </a>
                     </li>
-                {% else %}
-                    <li class="list-group-item">
-                        No n'hi ha
-                    </li>
                 {% endfor %}
+            {% else %}
+                <li class="list-group-item">
+                    No n'hi ha
+                </li>
+            {% endif %}
             </ul>
         </div>
     </div>

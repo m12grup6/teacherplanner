@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @Route("/teachers")
  */
-
 class TeacherController extends AbstractController
 {
 
@@ -25,7 +24,7 @@ class TeacherController extends AbstractController
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
-        $this->passwordHasher= $passwordHasher;
+        $this->passwordHasher = $passwordHasher;
     }
 
 
@@ -148,14 +147,14 @@ class TeacherController extends AbstractController
             if ($form->get('hora_fi')->getData() instanceof \Datetime) {
                 $horaFi = $form->get('hora_fi')->getData()->format('H:i:s');
             }
-            $dia = $this->translateDay($form->get('dia')->getData());
+            
             if (is_array($teacher->getTeacherConstraints())) {
                 $newConstraint = $teacher->getTeacherConstraints();
             } else {
                 $newConstraint = array();
             }
             $newConstraint[] = array(
-                'dia' => $dia,
+                'dia' => $form->get('dia')->getData(),
                 'hora_inici' => $horaInici,
                 'hora_fi' => $horaFi
             );
@@ -168,48 +167,37 @@ class TeacherController extends AbstractController
         }
 
         return $this->render('teacher/addConstraint.html.twig', [
-            'controller_name' => 'TeacherController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'teacher_id' => $teacher->getId(),
+            'teacher' => $teacher
         ]);
     }
 
-     /**
-     * @Route("/{id}/constraints/show", name="app_showConstraint")
+    /**
+     * @Route("/{id}/constraints", name="app_showConstraints")
      * Mètode per mostrar franja de restricció al professor
      * @param Integer $id del teacher a mostrar.
      */
-    public function showConstraint(User $teacher, Request $request)
+    public function showConstraints(User $teacher, Request $request)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $allConstraints = $entityManager->getRepository(User::class)->findAll();
         return $this->render('teacher/allConstraints.html.twig', [
-            'teacher' => $teacher
+            'constraints' => $teacher->getTeacherConstraints()
         ]);
-
-
     }
 
-    private function translateDay($day)
+    /**
+     * @Route("/{id}/constraints/delete/{idConstraint}", name="app_deleteConstraint")
+     * Mètode per esborrar franja de restricció al professor
+     * @param Integer $id id del teacher a editar.
+     * @param Integer $idConstraint id de la posició del array.
+     */
+    public function deleteConstraint(User $teacher, $idConstraint)
     {
-        $newDay = $day;
-        switch ($day) {
-            case 'monday':
-                $newDay = "Dilluns";
-                break;
-            case 'tuesday':
-                $newDay = "Dimarts";
-                break;
-            case 'wednesday':
-                $newDay = "Dimecres";
-                break;
-            case 'thursday':
-                $newDay = "Dijous";
-                break;
-            case 'friday':
-                $newDay = "Divendres";
-                break;
-        }
-        return $newDay;
-    }
+        $constraints = $teacher->getTeacherConstraints();
+        unset($constraints[$idConstraint]);
+        $teacher->setTeacherConstraints($constraints);
+        $this->entityManager->flush();
 
+        return $this->redirectToRoute('app_detailTeacher', array('id' => $teacher->getId()));
+    }
 }

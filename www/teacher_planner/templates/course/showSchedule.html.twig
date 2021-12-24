@@ -1,5 +1,52 @@
 {% extends 'base.html.twig' %}
 {% block title %}Horari del curs {% endblock %}
+{% set days = ['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres'] %}
+{% set timetable = ['8-9', '9-10', '10-11', '11-12', '12-13', '13-14'] %}
 {% block body %}
-{{ dump(schedule) }}
+
+<div class="container">
+    <div class="timetable-img text-center">
+        <img src="img/content/timetable.png" alt="">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr class="bg-white">
+                    <th class="text-uppercase">Hora
+                    </th>
+                    {% for day in days %}                    
+                        <th class="text-uppercase">{{day}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+            {% for hour in timetable %}
+                <tr>
+                    
+                    <td class="align-middle">{{ hour }}</td>
+
+                    {% for day in days %}
+                        {% set empty = true %}
+                        {% for entry in schedule %}
+                            {% if entry.day == day and entry.hour == hour %}
+                            {% set empty = false %}
+                        <td class="p-3">
+                            <div class="bg-secondary p-1 rounded mb-1 text-white">{{ entry.subject.name }}</div>
+                            <div class="text-secondary">{{ entry.teacher.name }}</div>                                
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                        {% if empty == true%} 
+                        <td class="p-3 bg-light">
+                            <div class="p-1 rounded mb-1 text-white">&nbsp;</div>
+                            <div class="text-secondary">&nbsp;</div>                              
+                        </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}    
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
