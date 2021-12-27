@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}Curs{% endblock %}
-{% block sectiontitle %}{{ course.name }} de {{ course.cicle == 'primary' ? 'primària' : 'secundària' }}{% endblock %}
+{% block sectiontitle %}{{ course.name }} de {{ course.cicle == 'Primaria' ? 'Primària' : 'Secundària' }}{% endblock %}
 {% block body %}
     <div class="card card-bleed shadow-light-lg">
         <div class="card-header">
@@ -31,7 +31,7 @@
                     <li class="list-group-item">
                         <div class="row align-items-center text-secondary">
                             <div class="col-auto">{{ subject.id }}</div>
-                            <div class="col-auto">{{ subject.name }}, {{ subject.course.name | lower }} de {{ subject.course.cicle == 'primary' ? 'primària' : 'secundària' }} ({{ subject.hoursWeek }} hores lectives)</div>
+                            <div class="col-auto">{{ subject.name }}, {{ subject.course.name | lower }} de {{ subject.course.cicle == 'Primaria' ? 'Primària' : 'Secundària' }} ({{ subject.hoursWeek }} hores lectives)</div>
                             <div class="col-auto">
                                 <a href="../subjects/delete/{{ subject.id }}" class="text-decoration-none">
                                     <button class="col-auto btn btn-xs btn-danger">

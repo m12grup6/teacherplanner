@@ -29,16 +29,16 @@ class TeacherType extends AbstractType
     {
 
         $builder
+            ->add('name')
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
-            ->add('name')
             ->add('roles', ChoiceType::class, [
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'choices'  => [
-                    'Coordinador' => 'ROLE_PARTNER',
-                    'Profesor' => 'ROLE_ADMIN',
+                    'Coordinador' => 'ROLE_ADMIN',
+                    'Profesor' => 'ROLE_USER',
                 ],
             ])
             ->add('subjects', EntityType::class, [
@@ -54,6 +54,7 @@ class TeacherType extends AbstractType
                     return $subject ? $subject->getName() . ' (' . $subject->getCourse()->getName() . ' de ' . $subject->getCourse()->getCicle() . ')' : '';
                 },
             ])
+            ->add('teaching_hours')
             ->add('submit', SubmitType::class);
 
         // Transforma
