@@ -40,6 +40,7 @@ class ScheduleController extends AbstractController
     */
 
     public function generateSchedule(){
+        $this->deleteSchedules();
         $schedule= $this->generateProposedSchedule();
 
         return $this->render('course/showSchedule.html.twig', [
@@ -142,6 +143,9 @@ class ScheduleController extends AbstractController
 
                     $proposal[$k] = $schedule;
                     $k++;
+
+                    $entityManager->persist($schedule);
+                    $entityManager->flush();
                 }
             }
         }
