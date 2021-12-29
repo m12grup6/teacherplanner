@@ -60,4 +60,5 @@ class SubjectRepository extends ServiceEntityRepository
         // returns an array of subjects objects
         return $query->getResult();
     }
+
 }
