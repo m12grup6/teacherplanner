@@ -171,12 +171,25 @@ class ScheduleController extends AbstractController
     }
 
     /**
+     * Mètode que Esborra els schedules actuals a la base de dades.
+    */
+    public function deleteSchedules()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $schedules = $entityManager->getRepository(Schedule::class)->findAll();
+        foreach ($schedules as $scheduleObject) {
+            $entityManager->remove($scheduleObject);
+        }
+        $entityManager->flush();
+    }
+
+    /**
      * Mètode que retorna true si el dia i hora proposats per una assignatura i un professor és dins d'una restricció horària del professor que donarà l'assignatura.
      * @param Array $franja dia i hora proposats per una assignatura
      * @param Array $constraints indisponibilitat del professor
      * @return Boolean false si no hi ha incompatibilitat; true si es solapa el dia i hora amb les restriccions del professor. 
     */
-    
+   
     public function checkTeacherConstraints(array $franja, array $constraints)
     {   
         if (!empty ($constraints)){
