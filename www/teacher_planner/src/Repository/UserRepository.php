@@ -4,10 +4,12 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Driver\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\DBAL\DriverManager;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -65,15 +67,32 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function findTeacherById($value)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
+            ->andWhere('u.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
+     */
+
+    public function findTeacherBySubjectId($id){
+       
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT user_id FROM user_subject WHERE subject_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $resultSet = $stmt->executeQuery();
+        $teacher_id = $resultSet->fetchOne();
+                
+        return $teacher_id;
+    }
+
 }
