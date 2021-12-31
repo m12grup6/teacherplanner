@@ -8,6 +8,13 @@
     <div class="timetable-img text-center">
         <img src="img/content/timetable.png" alt="">
     </div>
+    {% for label, messages in app.flashes(['error']) %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <div class="table-responsive">
         <table class="table table-bordered text-center">
             <thead>
