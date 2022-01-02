@@ -4,10 +4,9 @@
 {% set timetable = ['08-09', '09-10', '10-11', '11-12', '12-13', '13-14'] %}
 {% block body %}
 
+
+
 <div class="container">
-    <div class="timetable-img text-center">
-        <img src="img/content/timetable.png" alt="">
-    </div>
     {% for label, messages in app.flashes(['error']) %}
         {% for message in messages %}
             <div class="flash-{{ label }}">
@@ -15,6 +14,24 @@
             </div>
         {% endfor %}
     {% endfor %}
+
+{% if schedule|default %}
+
+schedule
+{{ dump(schedule) }}
+raw
+{{ dump(raw) }}
+rawest
+{{ dump(rawest) }}
+
+{% for key, cicle in schedule %}
+
+<h3>{{ key }}</h3>
+
+    {% for key, course in cicle %}
+
+    <h4>{{ key }}</h4>
+
     <div class="table-responsive">
         <table class="table table-bordered text-center">
             <thead>
@@ -34,11 +51,12 @@
 
                     {% for day in days %}
                         {% set empty = true %}
-                        {% for entry in schedule %}
+                        {% for entry in course %}
                             {% if entry.day == day and entry.hour == hour %}
                             {% set empty = false %}
                         <td class="p-3">
-                            <div class="bg-secondary p-1 rounded mb-1 text-white">{{ entry.subject.name }}</div>
+                        {{entry.id}}
+                            <div class="bg-secondary p-1 rounded mb-1 text-white">{{ entry.subject.name }} {{entry.subject.course.name}}</div>
                             <div class="text-secondary">{{ entry.teacher.name }}</div>                                
                             {% endif %}
                         </td>
@@ -55,5 +73,9 @@
             </tbody>
         </table>
     </div>
+    {% endfor %}
+{% endfor %}
+{% endif %}
+
 </div>
 {% endblock %}

@@ -42,6 +42,10 @@ class ScheduleController extends AbstractController
     public function showSchedule()
     {
         $schedules = $this->entityManager->getRepository(Schedule::class)->findAll();
+        $rawest = $this->entityManager->getRepository(Schedule::class)->findAll();
+        $orderedSchedules = [];
+        $primaria = [];
+        $secundaria = [];
 
         foreach ($schedules as $key => $schedule) {
             switch ($schedule->getDay()) {
@@ -64,10 +68,22 @@ class ScheduleController extends AbstractController
                 $hours[] = $timeParts[0];
             }
             $schedules[$key]->setHour(join('-', $hours));
+
+            // Agrupa per cicle i curs
+            $curs = $schedule->getSubject()->getCourse()->getName();
+            $cicle = $schedule->getSubject()->getCourse()->getCicle();
+            if ($cicle == 'Primaria') {
+                $primaria[$cicle][$curs][] = $schedule;
+            } else if ($cicle == 'Secundaria') {
+                $secundaria[$cicle][$curs][] = $schedule;
+            }
         }
-        
+
+        $orderedSchedules = array_merge($primaria, $secundaria);
         return $this->render('course/showSchedule.html.twig', [
-            'schedule' => $schedules,
+            'schedule' => $orderedSchedules,
+            'raw' => $schedules,
+            'rawest' => $rawest
         ]);
     }
 
