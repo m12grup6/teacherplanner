@@ -36,17 +36,51 @@ class ScheduleController extends AbstractController
     }
 
     /**
-     * @Route("/generateSchedule", name="app_schedule")
+     * @Route("/", name="app_showSchedule")
+     */
+
+    public function showSchedule()
+    {
+        $schedules = $this->entityManager->getRepository(Schedule::class)->findAll();
+
+        foreach ($schedules as $key => $schedule) {
+            switch ($schedule->getDay()) {
+                case 'monday':
+                    $schedules[$key]->setDay('Dilluns');
+                case 'tuesday':
+                    $schedules[$key]->setDay('Dimarts');
+                case 'wednesday':
+                    $schedules[$key]->setDay('Dimecres');
+                case 'thursday':
+                    $schedules[$key]->setDay('Dijous');
+                case 'friday':
+                    $schedules[$key]->setDay('Divendres');
+            }
+
+            $hours = array();
+            $franja = explode('-', $schedule->getHour());
+            foreach ($franja as $hora) {
+                $timeParts = explode(':', $hora);
+                $hours[] = $timeParts[0];
+            }
+            $schedules[$key]->setHour(join('-', $hours));
+        }
+        
+        return $this->render('course/showSchedule.html.twig', [
+            'schedule' => $schedules,
+        ]);
+    }
+
+    /**
+     * @Route("/generate", name="app_generateSchedule")
      */
 
     public function generateSchedule()
     {
         $this->deleteSchedules();
-        $schedule = $this->generateProposedSchedule();
+        $this->generateProposedSchedule();
 
-        return $this->render('course/showSchedule.html.twig', [
-            'schedule' => $schedule,
-        ]);
+        return $this->redirectToRoute('app_showSchedule');
     }
 
     /**
@@ -114,7 +148,7 @@ class ScheduleController extends AbstractController
                     ->findTeacherBySubjectId($subject_id);
 
                 $teacher = $entityManager->getRepository(User::class)->findTeacherById($teacher_id);
-                
+
                 if (!$teacher) {
                     $this->addFlash('error', 'No hi han docents per al subject ' . $subject->getName() . ' (' . $subject->getCourse()->getName() . ' de ' . $subject->getCourse()->getCicle() . ')');
                 } else {
