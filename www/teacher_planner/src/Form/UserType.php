@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,9 +16,15 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
-            ->add('name')
+            ->add('email', EmailType::class, [
+                'required' => true,
+            ])
+            ->add('password', PasswordType::class, [
+                'required' => true,
+            ])
+            ->add('name', null, [
+                'required' => true,
+            ])
             ->add('submit', SubmitType::class)
         ;
     }
