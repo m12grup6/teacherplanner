@@ -51,14 +51,19 @@ class ScheduleController extends AbstractController
             switch ($schedule->getDay()) {
                 case 'monday':
                     $schedules[$key]->setDay('Dilluns');
+                    break;
                 case 'tuesday':
                     $schedules[$key]->setDay('Dimarts');
+                    break;
                 case 'wednesday':
                     $schedules[$key]->setDay('Dimecres');
+                    break;
                 case 'thursday':
                     $schedules[$key]->setDay('Dijous');
+                    break;
                 case 'friday':
                     $schedules[$key]->setDay('Divendres');
+                    break;
             }
 
             $hours = array();
