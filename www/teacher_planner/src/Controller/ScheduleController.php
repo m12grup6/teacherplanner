@@ -42,7 +42,6 @@ class ScheduleController extends AbstractController
     public function showSchedule()
     {
         $schedules = $this->entityManager->getRepository(Schedule::class)->findAll();
-        $rawest = $this->entityManager->getRepository(Schedule::class)->findAll();
         $orderedSchedules = [];
         $primaria = [];
         $secundaria = [];
@@ -78,9 +77,9 @@ class ScheduleController extends AbstractController
             $curs = $schedule->getSubject()->getCourse()->getName();
             $cicle = $schedule->getSubject()->getCourse()->getCicle();
             if ($cicle == 'Primaria') {
-                $primaria[$cicle][$curs][] = $schedule;
+                $primaria['Primària'][$curs][] = $schedule;
             } else if ($cicle == 'Secundaria') {
-                $secundaria[$cicle][$curs][] = $schedule;
+                $secundaria['Secundària'][$curs][] = $schedule;
             }
         }
 
@@ -88,7 +87,6 @@ class ScheduleController extends AbstractController
         return $this->render('course/showSchedule.html.twig', [
             'schedule' => $orderedSchedules,
             'raw' => $schedules,
-            'rawest' => $rawest
         ]);
     }
 
