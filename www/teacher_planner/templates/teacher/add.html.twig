@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Afegir Docent{% endblock %}
-{% block sectiontitle %}Afegir Docent{% endblock %}
+{% block title %}{{ edit ? 'Actualitzar' : 'Afegir' }} Docent{% endblock %}
+{% block sectiontitle %}{{ edit ? 'Actualitzar' : 'Afegir' }} Docent{% endblock %}
 {% block body %}
 
     <div class="row align-items-center justify-content-center gx-5">
@@ -40,7 +40,7 @@
                     {{ form_row(form.subjects, {'label': 'Assignatures'}) }}
                 </div>
             </div>                        
-            {{ form_row(form.submit, { 'label': 'Afegir' }) }}
+            {{ form_row(form.submit, { 'label': edit ? 'Actualitzar' : 'Afegir' }) }}
             {{ form_end(form) }}
         </div>
         <div class="col-6">
