@@ -1,20 +1,29 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{teacher.name}}{% endblock %}
 {% block sectiontitle %}Docent{% endblock %}
+{% set days = ['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres'] %}
+{% set timetable = ['08-09', '09-10', '10-11', '11-12', '12-13', '13-14'] %}
 {% block body %}
     <div class="card card-bleed shadow-light-lg">
         <div class="card-header">
             <div class="row align-items-center">
                 <div class="col">
                     <!-- Heading -->
-                    <h4 class="mb-0">
+                    <h3 class="mb-0">
                         {{ teacher.name }}
-                    </h4>
+                    </h3>
                 </div>
 
+                {% if 'ROLE_ADMIN' in app.user.getRoles %}
                 <div class="col-auto">
+                
+                    <!-- Button -->
+                    <button class="btn btn-xs btn-primary">
+                        <a class="text-decoration-none text-white" href="{{ path('app_updateTeachers',{id: teacher.id }) }}">Editar</a>
+                    </button>
 
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="card-body">
@@ -26,73 +35,184 @@
                     <div class="row align-items-center mt-1">
                         <div class="col-auto">
                         {% if 'ROLE_ADMIN' in teacher.getRoles %}
-                            Admin
+                            Administrador/a
                         {% else %}
-                            Usuari/a
+                            Docent
                         {% endif %}                        
                         </div>
-                    </div>                                
+                    </div>    
+                    <div class="row align-items-center">
+                        <div class="col-auto">{{ teacher.getTeachingHours }} hores setmanals</div>
+                    </div>                                                
                 </li>
             </ul>
         </div>
     </div> 
 
     <div class="card card-bleed shadow-light-lg mt-5">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
 
-                        <!-- Heading -->
-                        <h4 class="mb-0">
-                            Restriccions
-                        </h4>
-                    
-                    </div>
-                    <div class="col-auto">
-                    
-                        <!-- Button -->
-                        <button class="btn btn-xs btn-primary">
-                            <a class="text-decoration-none text-white" href="{{ path('app_addConstraint',{id: teacher.id }) }}">Afegir</a>
-                        </button>
-                    
-                    </div>                    
+                    <!-- Heading -->
+                    <h3 class="mb-0">
+                        Assignatures
+                    </h3>
+                
                 </div>
             </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% if teacher.getTeacherConstraints | length > 0 %}
-                        {% for key, constraint in teacher.getTeacherConstraints %}
-                            <li class="list-group-item">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                    {% if constraint.dia == 'monday' %}
-                                        Dilluns
-                                    {% elseif constraint.dia == 'tuesday' %}
-                                        Dimarts
-                                    {% elseif constraint.dia == 'wednesday' %}
-                                        Dimecres
-                                    {% elseif constraint.dia == 'thursday' %}
-                                        Dijous
-                                    {% elseif constraint.dia == 'friday' %}
-                                        Divendres
-                                    {% endif %}
-                                     de {{ date(constraint.hora_inici)| date('H') }} a {{ date(constraint.hora_fi)| date('H') }} </div>
-                                    <div class="col-auto">
-                                        <a href="{{ path('app_deleteConstraint',{id: teacher.id, idConstraint: key }) }}" class="text-decoration-none">
-                                            <button class="col-auto btn btn-xs btn-danger">
-                                            Esborrar
-                                            </button>
-                                        </a>
-                                    </div>                                    
-                                </div>
-                            </li>
-                        {% endfor %}
-                    {% else %}
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% if teacher.getSubjects | length > 0 %}
+                    {% for key, subject in teacher.getSubjects %}
                         <li class="list-group-item">
-                            No n'hi ha
-                        </li>                        
-                    {% endif %}                    
-                </ul>
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    {{ subject.name }} ({{ subject.getCourse.name }} de {{subject.getCourse.getCicle == 'Primaria' ? 'Primària' : 'Secundària'}} )
+                                </div>                                 
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">
+                        No n'hi ha
+                    </li>                        
+                {% endif %}                    
+            </ul>
+        </div>
+    </div>     
+
+    <div class="card card-bleed shadow-light-lg mt-5">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+
+                    <!-- Heading -->
+                    <h3 class="mb-0">
+                        Restriccions
+                    </h3>
+                
+                </div>
+                {% if 'ROLE_ADMIN' in app.user.getRoles %}
+                <div class="col-auto">
+                
+                    <!-- Button -->
+                    <button class="btn btn-xs btn-primary">
+                        <a class="text-decoration-none text-white" href="{{ path('app_addConstraint',{id: teacher.id }) }}">Afegir</a>
+                    </button>
+                
+                </div>     
+                {% endif %}               
             </div>
-        </div>     
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% if teacher.getTeacherConstraints | length > 0 %}
+                    {% for key, constraint in teacher.getTeacherConstraints %}
+                        <li class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                {% if constraint.dia == 'monday' %}
+                                    Dilluns
+                                {% elseif constraint.dia == 'tuesday' %}
+                                    Dimarts
+                                {% elseif constraint.dia == 'wednesday' %}
+                                    Dimecres
+                                {% elseif constraint.dia == 'thursday' %}
+                                    Dijous
+                                {% elseif constraint.dia == 'friday' %}
+                                    Divendres
+                                {% endif %}
+                                    de {{ date(constraint.hora_inici)| date('H') }} a {{ date(constraint.hora_fi)| date('H') }} </div>
+                                <div class="col-auto">
+                                    <a href="{{ path('app_deleteConstraint',{id: teacher.id, idConstraint: key }) }}" class="text-decoration-none">
+                                        <button class="col-auto btn btn-xs btn-danger">
+                                        Esborrar
+                                        </button>
+                                    </a>
+                                </div>                                    
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">
+                        No n'hi ha
+                    </li>                        
+                {% endif %}                    
+            </ul>
+        </div>
+    </div>     
+
+    <div class="card card-bleed shadow-light-lg mt-5">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <!-- Heading -->
+                    <h3 class="mb-0">
+                        Horari
+                    </h3>
+                </div>
+
+                <div class="col-auto">
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+        {% if teacher.getSchedules|default %}
+        {% for key, cicle in teacher.getSchedules %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h4 class="pb-4">{{ key }}</h4>
+                    {% for key, course in cicle %}
+
+                    <h5 class="pb-4">{{ key }}</h5>
+
+                    <div class="table-responsive pb-4">
+                        <table class="table table-fixed table-bordered text-center">
+                            <thead>
+                                <tr class="bg-white">
+                                    <th class="text-uppercase">Hora</th>
+                                    {% for day in days %}                    
+                                        <th style="width:18%" class="text-uppercase">{{day}}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                            {% for hour in timetable %}
+                                <tr>
+                                    <td style="width: 10%" class="align-middle">{{ hour }}</td>
+                                    {% for day in days %}
+                                        {% set emptycell = true %}
+                                        {% for entry in course %}
+                                            {% if entry.day == day and entry.hour == hour %}
+                                                {% set emptycell = false %}
+                                                <td class="p-3">
+                                                    <div class="bg-secondary p-1 rounded mb-1 text-white">{{entry.id}} {{ entry.subject.name }} {{entry.subject.course.name}}</div>
+                                                    <div class="text-secondary">{{ entry.teacher.name }}</div>                                
+                                                </td>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if emptycell == true%} 
+                                            <td class="p-3 bg-light">
+                                                <div class="p-1 rounded mb-1 text-white">&nbsp;</div>
+                                                <div class="text-secondary">&nbsp;</div>                              
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}    
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {% endfor %}
+                </li>
+            </ul>
+        {% endfor %}
+        {% endif %}
+        </div>
+    </div>     
+
 {% endblock %}

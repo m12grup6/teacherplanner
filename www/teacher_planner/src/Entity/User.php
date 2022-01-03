@@ -256,12 +256,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Schedule[]
-     */
-    public function getSchedules(): Collection
+    public function getSchedules(): ?array 
     {
-        return $this->schedules;
+        $schedules = $this->schedules;
+        $orderedSchedules = [];
+        $primaria = [];
+        $secundaria = [];
+        foreach ($schedules as $key => $schedule) {        
+            switch ($schedule->getDay()) {
+                case 'monday':
+                    $schedules[$key]->setDay('Dilluns');
+                    break;
+                case 'tuesday':
+                    $schedules[$key]->setDay('Dimarts');
+                    break;
+                case 'wednesday':
+                    $schedules[$key]->setDay('Dimecres');
+                    break;
+                case 'thursday':
+                    $schedules[$key]->setDay('Dijous');
+                    break;
+                case 'friday':
+                    $schedules[$key]->setDay('Divendres');
+                    break;
+            }
+
+            $hours = array();
+            $franja = explode('-', $schedule->getHour());
+            foreach ($franja as $hora) {
+                $timeParts = explode(':', $hora);
+                $hours[] = $timeParts[0];
+            }
+            $schedules[$key]->setHour(join('-', $hours));            
+            $curs = $schedule->getSubject()->getCourse()->getName();
+            $cicle = $schedule->getSubject()->getCourse()->getCicle();   
+            if ($cicle == 'Primaria') {
+                $primaria['Primària'][$curs][] = $schedule;
+            } else if ($cicle == 'Secundaria') {
+                $secundaria['Secundària'][$curs][] = $schedule;
+            }
+        }     
+        $orderedSchedules = array_merge($primaria, $secundaria);
+        return $orderedSchedules;
     }
 
     public function addSchedule(Schedule $schedule): self
