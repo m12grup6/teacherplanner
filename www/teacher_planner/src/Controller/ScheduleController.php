@@ -169,7 +169,7 @@ class ScheduleController extends AbstractController
                 $teacher = $entityManager->getRepository(User::class)->findTeacherById($teacher_id);
 
                 if (!$teacher) {
-                    $this->addFlash('error', 'No hi han docents per al subject ' . $subject->getName() . ' (' . $subject->getCourse()->getName() . ' de ' . $subject->getCourse()->getCicle() . ')');
+                    $this->addFlash('error', 'No hi han docents per a l\'assignatura ' . $subject->getName() . ' (' . $subject->getCourse()->getName() . ' de ' . $subject->getCourse()->getCicle() . ')');
                 } else {
                     $restrictions = $teacher->getTeacherConstraints();
 
