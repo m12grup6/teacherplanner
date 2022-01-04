@@ -9,21 +9,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistroController extends AbstractController
 {
     /**
      * @Route("/register", name="app_registerAdmin")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $user->setPassword($passwordEncoder->encodePassword($user, $form['password']->getData()));
+            $user->setPassword($passwordHasher->hashPassword($user, $form['password']->getData()));
             $user->setIsActive(false);
             $user->setRoles(['ROLE_ADMIN']);
             $user->setCreatedAt(new DateTimeImmutable());
