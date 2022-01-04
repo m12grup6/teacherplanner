@@ -2,32 +2,32 @@
 
 namespace App\Tests\Controller;
 
-use App\Repository\ScheduleRepository;
-use App\Entity\Schedule;
-use App\Controller\Schedule;
+use App\Controller\ScheduleController;
+use PHPUnit\Framework\TestCase;
 
-class ScheduleTest 
-{
-    public function testCheckTeacherRestrictionsTrue(): 
-    {   
+
+class ScheduleTest extends TestCase {
+
+    public function testTeacherWithoutRestrictionsIsAvailable() {   
         $franja = array(
             'dia' => 'monday',
             'hora_inici' => '08:00:00',
             'hora_fi' => '09:00:00',
         ); 
 
-        $teacherConstraints = array(
-            'dia' => 'monday',
-            'hora_fi' => '15:00:00',
-            'hora_inici' => '08:00:00',
-        );  
+        $teacherConstraints = array();
 
-        $result = $this->checkTeacherConstraints($franja, $teacherConstraints);
-        $this->assertEquals("true";$result);
+        $mockSubjectRepository = $this->createMock(\App\Repository\SubjectRepository::class);
+        $mockUserRepository = $this->createMock(\App\Repository\UserRepository::class);
+        $mockCourseRepository = $this->createMock(\App\Repository\CourseRepository::class);
+        $mockEntityManager = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
+        $schedule = new ScheduleController($mockSubjectRepository, $mockUserRepository, $mockCourseRepository, $mockEntityManager);
+        
+        $result = $schedule->checkTeacherConstraints($franja, $teacherConstraints);
+        $this->assertTrue(false===$result);
     }
 
-    public function testCheckTeacherRestrictionsFalse(): 
-    {   
+    public function testTeacherWithRestrictionsIsUnavailable() {   
         $franja = array(
             'dia' => 'monday',
             'hora_inici' => '08:00:00',
@@ -40,9 +40,14 @@ class ScheduleTest
             'hora_inici' => '08:00:00',
         );  
 
-        $result = $this->checkTeacherConstraints($franja, $teacherConstraints);
-        $this->assertEquals("false";$result);
+        $mockSubjectRepository = $this->createMock(\App\Repository\SubjectRepository::class);
+        $mockUserRepository = $this->createMock(\App\Repository\UserRepository::class);
+        $mockCourseRepository = $this->createMock(\App\Repository\CourseRepository::class);
+        $mockEntityManager = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
+        $schedule = new ScheduleController($mockSubjectRepository, $mockUserRepository, $mockCourseRepository, $mockEntityManager);
+        
+        $result = $schedule->checkTeacherConstraints($franja, $teacherConstraints);
+        $this->assertTrue(true===$result);
     }
 
-    
 }

@@ -191,6 +191,7 @@ class ScheduleController extends AbstractController
                     $this->addFlash('error', 'No hi han docents per al subject ' . $subject->getName() . ' (' . $subject->getCourse()->getName() . ' de ' . $subject->getCourse()->getCicle() . ')');
                 } else {
                     $restrictions = $teacher->getTeacherConstraints();
+                    var_dump($restrictions);
 
                     for ($j = 0; $j < $subject_hours_week; $j++) {
                         do{ 
@@ -313,7 +314,7 @@ class ScheduleController extends AbstractController
      */
 
     public function checkTeacherConstraints(array $franja, array $constraints)
-    {   
+    {
         if (!empty($constraints)) {
             $constraintsOfTeacher = array();
             foreach (DAYS as $day) {
