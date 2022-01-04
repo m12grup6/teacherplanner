@@ -35,10 +35,18 @@ class ScheduleTest extends TestCase {
         ); 
 
         $teacherConstraints = array(
-            'dia' => 'tuesday',
-            'hora_fi' => '15:00:00',
-            'hora_inici' => '08:00:00',
-        );  
+            array (
+                'dia' => 'monday',
+                'hora_fi' => '15:00:00',
+                'hora_inici' => '08:00:00',
+            ),
+            array (
+                'dia' => 'friday',
+                'hora_fi' => '15:00:00',
+                'hora_inici' => '08:00:00',
+            )
+        );
+       
 
         $mockSubjectRepository = $this->createMock(\App\Repository\SubjectRepository::class);
         $mockUserRepository = $this->createMock(\App\Repository\UserRepository::class);

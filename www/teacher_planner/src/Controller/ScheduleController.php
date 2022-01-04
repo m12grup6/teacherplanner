@@ -38,7 +38,11 @@ class ScheduleController extends AbstractController
 
     /**
      * @Route("/", name="app_showSchedule")
-     */
+    */
+
+    /**
+     * Mètode que retorna l'horari per mostrar-ho al front.
+    */
 
     public function showSchedule()
     {
@@ -74,7 +78,10 @@ class ScheduleController extends AbstractController
 
     /**
      * @Route("/generate", name="app_generateSchedule")
-     */
+    */
+    /**
+     * Mètode que borra l'horari anterior i crida al mètode per generar un nou horari. Redirecciona a la pàgina que mostra l'horari.
+    */
 
     public function generateSchedule()
     {
@@ -239,16 +246,25 @@ class ScheduleController extends AbstractController
         }
         return $proposal;
     }
+  
+    /**
+     * Mètode que esborra els schedules actuals a la base de dades.
+     */
 
-    public function getDayRandom()    {
-        $dayRandom = array_rand(DAYS, 1);
-        return $dayRandom;
+    public function deleteSchedules()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $schedules = $entityManager->getRepository(Schedule::class)->findAll();
+        foreach ($schedules as $scheduleObject) {
+            $entityManager->remove($scheduleObject);
+        }
+        $entityManager->flush();
     }
 
-    public function getHourRandom()    {
-        $hourRandom = array_rand(TIMETABLE, 1);
-        return $hourRandom;
-    }
+    /**
+     * Mètode que crea la matriu horaria de cada professor. Aquesta matriu serveix per bloquejar el seu horari quan se'ls hi assigni una hora.
+     * @return Array matriu horaria de cada professor. 
+    */
 
     public function createTeacherScheduleAvailability()    {
         $entityManager = $this->getDoctrine()->getManager();
@@ -291,27 +307,12 @@ class ScheduleController extends AbstractController
         return $teacherScheduleAvailability;
     }
 
-   
-    /**
-     * Mètode que Esborra els schedules actuals a la base de dades.
-     */
-
-    public function deleteSchedules()
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $schedules = $entityManager->getRepository(Schedule::class)->findAll();
-        foreach ($schedules as $scheduleObject) {
-            $entityManager->remove($scheduleObject);
-        }
-        $entityManager->flush();
-    }
-
     /**
      * Mètode que retorna true si el dia i hora proposats per una assignatura i un professor és dins d'una restricció horària del professor que donarà l'assignatura.
      * @param Array $franja dia i hora proposats per una assignatura
      * @param Array $constraints indisponibilitat del professor
      * @return Boolean false si no hi ha incompatibilitat; true si es solapa el dia i hora amb les restriccions del professor. 
-     */
+    */
 
     public function checkTeacherConstraints(array $franja, array $constraints)
     {
