@@ -142,7 +142,7 @@ class TeacherController extends AbstractController
     {
         $form = $this->createForm(TeacherConstraintType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             if ($form->get('hora_inici')->getData() instanceof \Datetime) {
                 $horaInici = $form->get('hora_inici')->getData()->format('H:i:s');
             }
@@ -160,6 +160,7 @@ class TeacherController extends AbstractController
                 'hora_inici' => $horaInici,
                 'hora_fi' => $horaFi
             );
+            
             $teacher->setTeacherConstraints($newConstraint);
 
             $this->entityManager->flush();
