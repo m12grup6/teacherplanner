@@ -15,6 +15,7 @@ class RegistroController extends AbstractController
 {
     /**
      * @Route("/register", name="app_registerAdmin")
+     * Endpoint ambel formulari i controlador de registre
      */
     public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -25,7 +26,7 @@ class RegistroController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $user->setPassword($passwordHasher->hashPassword($user, $form['password']->getData()));
             $user->setIsActive(false);
-            $user->setRoles(['ROLE_ADMIN']);
+            $user->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
             $user->setCreatedAt(new DateTimeImmutable());
             $user->setUpdatedAt(new DateTimeImmutable());
             $em->persist($user);

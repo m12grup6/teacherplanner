@@ -1,0 +1,9 @@
+<h1>Hola!</h1>
+
+<p>Per a obtenir un nou password, cal accedir al següent link:</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>Aquest enllaç expirarà el {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+<p>Salutacions!</p>
