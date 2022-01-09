@@ -38,12 +38,8 @@ class ScheduleController extends AbstractController
 
     /**
      * @Route("/", name="app_showSchedule")
-    */
-
-    /**
      * Mètode que retorna l'horari per mostrar-ho al front.
     */
-
     public function showSchedule()
     {
         $schedules = $this->entityManager->getRepository(Schedule::class)->findAll();
@@ -78,11 +74,8 @@ class ScheduleController extends AbstractController
 
     /**
      * @Route("/generate", name="app_generateSchedule")
-    */
-    /**
      * Mètode que borra l'horari anterior i crida al mètode per generar un nou horari. Redirecciona a la pàgina que mostra l'horari.
     */
-
     public function generateSchedule()
     {
         $this->deleteSchedules();
@@ -250,7 +243,6 @@ class ScheduleController extends AbstractController
     /**
      * Mètode que esborra els schedules actuals a la base de dades.
      */
-
     public function deleteSchedules()
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -265,7 +257,6 @@ class ScheduleController extends AbstractController
      * Mètode que crea la matriu horaria de cada professor. Aquesta matriu serveix per bloquejar el seu horari quan se'ls hi assigni una hora.
      * @return Array matriu horaria de cada professor. 
     */
-
     public function createTeacherScheduleAvailability()    {
         $entityManager = $this->getDoctrine()->getManager();
         $teachers = $entityManager->getRepository(User::class)->findAll();
@@ -313,7 +304,6 @@ class ScheduleController extends AbstractController
      * @param Array $constraints indisponibilitat del professor
      * @return Boolean false si no hi ha incompatibilitat; true si es solapa el dia i hora amb les restriccions del professor. 
     */
-
     public function checkTeacherConstraints(array $franja, array $constraints)
     {
         if (!empty($constraints)) {
