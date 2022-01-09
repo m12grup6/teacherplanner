@@ -11,6 +11,7 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     * Mètode per realitzar el login
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -29,6 +30,7 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout")
+     * Mètode per realitzar la desconnexió de variables de sessió
      */
     public function logout(): void
     {
@@ -37,6 +39,7 @@ class SecurityController extends AbstractController
     
     /**
      * @Route("/", name="homepage")
+     * Redirecció inicial cap al controller de login. Aquest comprovarà si ja està iniciat.
      */
     public function homepage(): Response
     {
