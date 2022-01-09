@@ -39,9 +39,12 @@ class TeacherController extends AbstractController
         $form = $this->createForm(TeacherType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form['roles']->getData());
+            $roles = $form['roles']->getData();
+            if($roles[0] == 'ROLE_ADMIN') {
+                $roles[] = 'ROLE_USER';
+            }
             $em = $this->getDoctrine()->getManager();
-            $user->setRoles($form['roles']->getData());
+            $user->setRoles($roles);
             $user->setIsActive(true);
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
