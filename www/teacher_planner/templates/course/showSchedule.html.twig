@@ -14,12 +14,13 @@
             </div>        
         {% endfor %}
     {% endfor %}
+
+{% if schedule|default %}
     {% if 'ROLE_ADMIN' in app.user.getRoles %}
     <a class="btn btn-lg btn-primary mb-5" href="{{path('app_generateSchedule')}}">
         Generar nou horari
     </a>
     {% endif %}
-{% if schedule|default %}
 {% for key, cicle in schedule %}
 
 <h3 class="pb-4">{{ key }}</h3>
