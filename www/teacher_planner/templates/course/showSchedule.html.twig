@@ -14,7 +14,9 @@
             </div>        
         {% endfor %}
     {% endfor %}
-
+    <a class="btn btn-lg btn-primary mb-5" href="{{path('app_generateSchedule')}}">
+        Generar nou horari
+    </a>
 {% if schedule|default %}
 {% for key, cicle in schedule %}
 
@@ -45,7 +47,7 @@
                             {% if entry.day == day and entry.hour == hour %}
                                 {% set emptycell = false %}
                                 <td class="p-3">
-                                    <div class="bg-secondary p-1 rounded mb-1 text-white">{{entry.id}} {{ entry.subject.name }} {{entry.subject.course.name}}</div>
+                                    <div class="bg-secondary p-1 rounded mb-1 text-white">{{ entry.subject.name }}</div>
                                     <div class="text-secondary">{{ entry.teacher.name }}</div>                                
                                 </td>
                             {% endif %}
@@ -64,6 +66,10 @@
     </div>
     {% endfor %}
 {% endfor %}
+{% else %}
+    <a class="btn btn-lg btn-primary mb-5" href="{{path('app_generateSchedule')}}">
+        Generar horari
+    </a>    
 {% endif %}
 
 </div>
