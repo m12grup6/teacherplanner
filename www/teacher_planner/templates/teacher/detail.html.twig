@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{teacher.name}}{% endblock %}
-{% block sectiontitle %}Docent{% endblock %}
+{% block sectiontitle %}Perfil docent{% endblock %}
 {% set days = ['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres'] %}
 {% set timetable = ['08-09', '09-10', '10-11', '11-12', '12-13', '13-14'] %}
 {% block body %}
@@ -144,7 +144,7 @@
         </div>
     </div>     
 
-    <div class="card card-bleed shadow-light-lg mt-5">
+    <div class="card card-bleed shadow-light-lg my-5">
         <div class="card-header">
             <div class="row align-items-center">
                 <div class="col">
@@ -160,9 +160,9 @@
             </div>
         </div>
         <div class="card-body">
+            <ul class="list-group list-group-flush">
         {% if teacher.getSchedules|default %}
         {% for key, cicle in teacher.getSchedules %}
-            <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                     <h4 class="pb-4">{{ key }}</h4>
                     {% for key, course in cicle %}
@@ -209,9 +209,13 @@
                     
                     {% endfor %}
                 </li>
-            </ul>
         {% endfor %}
+        {% else %}
+                <li class="list-group-item">
+                    No n'hi ha
+                </li>           
         {% endif %}
+            </ul>
         </div>
     </div>     
 
