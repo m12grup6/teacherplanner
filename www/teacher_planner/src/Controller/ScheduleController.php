@@ -116,39 +116,7 @@ class ScheduleController extends AbstractController
         $k = 0;
         $teacherScheduleAvailability = $this->createTeacherScheduleAvailability();
         
-        foreach ($courses as $c) {
-
-            /*$scheduleCoursesAvailability[0][0] = true;
-            $scheduleCoursesAvailability[0][1] = true;
-            $scheduleCoursesAvailability[0][2] = true;
-            $scheduleCoursesAvailability[0][3] = true;
-            $scheduleCoursesAvailability[0][4] = true;
-            $scheduleCoursesAvailability[0][5] = true;
-            $scheduleCoursesAvailability[1][0] = true;
-            $scheduleCoursesAvailability[1][1] = true;
-            $scheduleCoursesAvailability[1][2] = true;
-            $scheduleCoursesAvailability[1][3] = true;
-            $scheduleCoursesAvailability[1][4] = true;
-            $scheduleCoursesAvailability[1][5] = true;
-            $scheduleCoursesAvailability[2][0] = true;
-            $scheduleAvailability[2][1] = true;
-            $scheduleAvailability[2][2] = true;
-            $scheduleAvailability[2][3] = true;
-            $scheduleAvailability[2][4] = true;
-            $scheduleAvailability[2][5] = true;
-            $scheduleAvailability[3][0] = true;
-            $scheduleAvailability[3][1] = true;
-            $scheduleAvailability[3][2] = true;
-            $scheduleAvailability[3][3] = true;
-            $scheduleAvailability[3][4] = true;
-            $scheduleAvailability[3][5] = true;
-            $scheduleAvailability[4][0] = true;
-            $scheduleAvailability[4][1] = true;
-            $scheduleAvailability[4][2] = true;
-            $scheduleAvailability[4][3] = true;
-            $scheduleAvailability[4][4] = true;
-            $scheduleAvailability[4][5] = true;*/
-            
+        foreach ($courses as $c) {            
             $scheduleAvailability = array(
                 array('day' => 'monday', 'hour' => '08:00:00-09:00:00'),
                 array('day' => 'monday', 'hour' => '09:00:00-10:00:00'),
@@ -210,21 +178,14 @@ class ScheduleController extends AbstractController
                     $this->addFlash('error', 'No hi han docents per a l\'assignatura ' . $subject->getName() . ' (' . $subject->getCourse()->getName() . ' de ' . $subject->getCourse()->getCicle() . ')');
                 } else {
                     $restrictions = $teacher->getTeacherConstraints();
-                    var_dump($restrictions);
 
                     for ($j = 0; $j < $subject_hours_week; $j++) {
                         do{ 
                             $dayHourRandom= array_rand($scheduleAvailability, 1);
-                            //$hourRandom= array_rand($scheduleAvailability['hour'], 1);
-                                                      
-                            /*$dayRandom = $this->getDayRandom();
-                            $hourRandom = $this->getHourRandom();*/
+                            
                             $day = $scheduleAvailability[$dayHourRandom]['day'];
                             $hour = $scheduleAvailability[$dayHourRandom]['hour'];
                             
-                            /*$day = DAYS[$dayRandom];
-                            $hour = TIMETABLE[$hourRandom];*/
-
                             $dayHours = explode("-", $hour);
 
                             $franja = array(
@@ -235,9 +196,6 @@ class ScheduleController extends AbstractController
                                                         
                         }  while ( $this->checkTeacherConstraints($franja, $restrictions) === true);
 
-                        /*$dayAvailable = DAYS[$dayRandom];
-                        $hourAvailable = TIMETABLE[$hourRandom];*/
-                       
                         $schedule = new Schedule();
                         $schedule->setDay($day);
                         $schedule->setHour($hour);
