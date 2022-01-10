@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ca">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
@@ -18,29 +18,19 @@
 
     <nav class="navbar navbar-light navbar-expand-lg px-5 bg-white" style="z-index: 1;">
         <div class="container-md">
-            <!-- Brand -->
             <a class="navbar-brand text-primary fw-bold" href="/">
                 TeacherPlanner
             </a>
 
             {% block menu %}
-            <!-- Collapse -->
             <div class="collapse navbar-collapse">
 
-            <!-- Navigation -->
             <ul class="navbar-nav ms-auto text-secondary">
                 <li class="nav-item">
                 <a class="nav-link" id="navbarCursos" href="{{ path('app_getCourses') }}">
                     Cursos
                 </a>
                 </li>
-                <!--
-                <li class="nav-item">
-                <a class="nav-link" id="navbarSubjects" href="{{ path('app_getSubjects') }}">
-                    Assignatures
-                </a>
-                </li>         
-                -->       
                 <li class="nav-item">
                 <a class="nav-link" id="navbarDocents"  href="{{ path('app_getTeachers') }}" >
                     Docents
@@ -72,14 +62,13 @@
       <div class="container-md">
         <div class="row align-items-center">
           <div class="col">
-            <!-- Heading -->
             <h1 class="my-5 text-white">
                 {% block sectiontitle %}
                 {% endblock %}
             </h1>
           </div>
-        </div> <!-- / .row -->
-      </div> <!-- / .container -->
+        </div>
+      </div> 
     </header>
 
     <main class="container-md mt-5">
