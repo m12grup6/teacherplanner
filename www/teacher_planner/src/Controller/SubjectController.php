@@ -110,8 +110,12 @@ class SubjectController extends AbstractController
             return $this->redirectToRoute('app_getSubjects');
         }
 
-        return $this->render('subject/add.html.twig', ['form' => $form->createView()]);
-    }
+        return $this->render('subject/add.html.twig', 
+            [
+                'form' => $form->createView(),
+                'edit' => true                
+            ]);
+    }           
 
     /**
      * @Route("/{id}", name="app_detailSubject")
@@ -121,7 +125,9 @@ class SubjectController extends AbstractController
     public function detailSubject(Subject $subject): Response
     {
         return $this->render('subject/detail.html.twig',
-            ['subject' => $subject]);
+            [
+                'subject' => $subject,
+            ]);
     }
 
 }

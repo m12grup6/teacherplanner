@@ -29,20 +29,40 @@
                 {% for teacher in allTeachers %}
                     {% if 'ROLE_USER' in teacher.roles %}
                         <li class="list-group-item">
-                            <a class="text-decoration-none text-secondary" href="{{ teacher.id }}">
-                            <div class="row align-items-center">
-                                <div class="col mb-0">{{ teacher.name }}</div>
+                            <div class="row align-items-center text-secondary">
+                                <div class="col-auto">{{ teacher.id }}</div>
+                                <div class="col">{{ teacher.name }}</div>
+                                <div class="col-auto">
+                                    <a href="{{ path('app_detailTeacher', {id: teacher.id}) }}" class="text-decoration-none">
+                                        <button class="col-auto btn btn-xs btn-info">
+                                        Perfil
+                                        </button>
+                                    </a>
+                                </div>  
+                                <div class="col-auto">
+                                    <a href="{{ path('app_deleteTeachers', {id: teacher.id}) }}" class="text-decoration-none">
+                                        <button class="col-auto btn btn-xs btn-danger">
+                                        Esborrar
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{{ path('app_updateTeachers', {id: teacher.id}) }}" class="text-decoration-none">
+                                        <button class="col-auto btn btn-xs btn-primary">
+                                        Editar
+                                        </button>
+                                    </a>
+                                </div>     
                             </div>
-                            </a>
                         </li>
                     {% endif %}
                 {% endfor %}
-            </ul>
             {% else %}
                 <li class="list-group-item">
                     No n'hi han
                 </li>
             {% endif %}
+            </ul>
         </div>
     </div>
 {% endblock %}

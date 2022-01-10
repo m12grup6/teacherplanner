@@ -20,11 +20,17 @@
             {% if allCourses | length > 0 %}
                 {% for course in allCourses %}
                     <li class="list-group-item">
-                        <a class="text-decoration-none text-secondary" href="{{ course.id }}">
-                        <div class="row align-items-center">
-                            <div class="col-auto">{{ course.name }} de {{ course.cicle == 'Primaria' ? 'Primària' : 'Secundària' }}</div>
+                        <div class="row align-items-center text-secondary">
+                            <div class="col-auto">{{ course.id }}</div>
+                            <div class="col">{{ course.name }} de {{ course.cicle == 'Primaria' ? 'Primària' : 'Secundària' }}</div>
+                            <div class="col-auto">
+                                <a href="{{ path('app_detailCourses', {id: course.id}) }}" class="text-decoration-none">
+                                    <button class="col-auto btn btn-xs btn-primary">
+                                    Assignatures
+                                    </button>
+                                </a>
+                            </div>                            
                         </div>
-                        </a>
                     </li>
                 {% endfor %}
             {% else %}

@@ -31,11 +31,18 @@
                     <li class="list-group-item">
                         <div class="row align-items-center text-secondary">
                             <div class="col-auto">{{ subject.id }}</div>
-                            <div class="col-auto">{{ subject.name }} ({{ subject.hoursWeek }} hores lectives)</div>
+                            <div class="col">{{ subject.name }} ({{ subject.hoursWeek }} hores lectives)</div>
                             <div class="col-auto">
                                 <a href="../subjects/delete/{{ subject.id }}" class="text-decoration-none">
                                     <button class="col-auto btn btn-xs btn-danger">
                                     Esborrar
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ path('app_updateSubjects', {id: subject.id}) }}" class="text-decoration-none">
+                                    <button class="col-auto btn btn-xs btn-primary">
+                                    Editar
                                     </button>
                                 </a>
                             </div>
