@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ edit ? 'Editar' : 'Afegir' }} Docent{% endblock %}
-{% block sectiontitle %}{{ edit ? 'Editar' : 'Afegir' }} Docent{% endblock %}
+{% block title %}{{ (edit|default) ? 'Editar' : 'Afegir' }} Docent{% endblock %}
+{% block sectiontitle %}{{ (edit|default) ? 'Editar' : 'Afegir' }} Docent{% endblock %}
 {% block body %}
 
     <div class="row align-items-center justify-content-center gx-5">
