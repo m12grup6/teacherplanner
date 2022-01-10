@@ -1,12 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recupera el teu password{% endblock %}
+{% block title %}Nova contrasenya{% endblock %}
+{% block sectiontitle %}Nova contrasenya{% endblock %}
+{% block menu %}
 
+{% endblock %}
 {% block body %}
-    <h1>Recupera el teu password</h1>
+<div class="row align-items-center justify-content-center gx-5">
+    <div class="col-4">
+        {{ form_start(form) }}
+            <div>
+                {% for label, messages in app.flashes(['reset_password_error']) %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                            {{ flashError }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>        
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Recupera</button>
-    {{ form_end(resetForm) }}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.plainPassword, {'label': 'Nova contrasenya'}) }}
+                </div>
+            </div>    
+
+            {{ form_row(form.submit, { 'label': 'Envia' }) }}
+        {{ form_end(form) }}        
+    </div>
+
+    <div class="col-5">
+        <img src="{{ asset('images/secure-login-amico.png') }}" alt="..." class="img-fluid">
+    </div>
+    
+</div>       
 {% endblock %}

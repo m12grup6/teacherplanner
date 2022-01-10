@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recuperació de contrasenya enviada{% endblock %}
+{% block title %}Recupera la contrasenya{% endblock %}
+{% block sectiontitle %}Recupera la contrasenya{% endblock %}
+{% block menu %}
 
+{% endblock %}
 {% block body %}
     <p>
-        S'ha enviat un enllaç a l'adrça abans indicada.
-        Aquest enlllaç expirarà en {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+        S'ha enviat un enllaç a la teva adreça de correu electrònic.
+        Aquest enllaç expirarà en {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
     </p>
     <p>Si no has rebut cap email, siusplau revisa la teva safata SPAM o pots <a href="{{ path('app_forgot_password_request') }}">tornar-ho a intentar</a>.</p>
 {% endblock %}

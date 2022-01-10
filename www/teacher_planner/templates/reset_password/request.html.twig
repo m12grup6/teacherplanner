@@ -1,21 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recuperació de la contrasenya{% endblock %}
+{% block title %}Recupera la contrasenya{% endblock %}
+{% block sectiontitle %}Recupera la contrasenya{% endblock %}
+{% block menu %}
 
+{% endblock %}
 {% block body %}
-    {% for flashError in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-    <h1>Recuperació de la contrasenya</h1>
+<div class="row align-items-center justify-content-center gx-5">
+    <div class="col-4">
+        {{ form_start(form) }}
+            <div>
+                {% for label, messages in app.flashes(['reset_password_error']) %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                            {{ flashError }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>        
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.email, {'label': 'Correu electrònic'}) }}
+                </div>
+            </div>    
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Introdueix la teva adreça electrònica per que t'enviem el link.
-            </small>
-        </div>
+            {{ form_row(form.submit, { 'label': 'Recupera la contrasenya' }) }}
+        {{ form_end(form) }}        
+        </form>
+    </div>
 
-        <button class="btn btn-primary">Envia email</button>
-    {{ form_end(requestForm) }}
+    <div class="col-5">
+        <img src="{{ asset('images/reset-password-amico.png') }}" alt="..." class="img-fluid">
+    </div>
+
+</div>
+
 {% endblock %}
