@@ -40,7 +40,7 @@
                     {{ form_row(form.subjects, {'label': 'Assignatures'}) }}
                 </div>
             </div>                        
-            {{ form_row(form.submit, { 'label': edit ? 'Actualitzar' : 'Afegir' }) }}
+            {{ form_row(form.submit, { 'label': (edit|default) ? 'Actualitzar' : 'Afegir' }) }}
             {{ form_end(form) }}
         </div>
         <div class="col-6">
