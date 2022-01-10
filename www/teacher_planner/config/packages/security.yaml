@@ -49,5 +49,7 @@ security:
     - { path: ^/teachers/add, roles: ROLE_ADMIN }
     - { path: ^/teachers/delete, roles: ROLE_ADMIN }
     - { path: ^/teachers/edit, roles: ROLE_ADMIN }
+    - { path: ^/schedule/generate, roles: ROLE_ADMIN }
+    - { path: ^/schedule, roles: [ROLE_ADMIN, ROLE_USER] }
   
         
