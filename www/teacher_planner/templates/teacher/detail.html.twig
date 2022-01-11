@@ -98,9 +98,7 @@
                 <div class="col-auto">
                 
                     <!-- Button -->
-                    <button class="btn btn-xs btn-primary">
-                        <a class="text-decoration-none text-white" href="{{ path('app_addConstraint',{id: teacher.id }) }}">Afegir</a>
-                    </button>
+                    <a class="text-decoration-none text-white btn btn-xs btn-primary" href="{{ path('app_addConstraint',{id: teacher.id }) }}">Afegir</a>
                 
                 </div>     
                 {% endif %}               
@@ -125,13 +123,13 @@
                                     Divendres
                                 {% endif %}
                                     de {{ date(constraint.hora_inici)| date('H') }} a {{ date(constraint.hora_fi)| date('H') }} </div>
+                                {% if 'ROLE_ADMIN' in app.user.getRoles %}
                                 <div class="col-auto">
-                                    <a href="{{ path('app_deleteConstraint',{id: teacher.id, idConstraint: key }) }}" class="text-decoration-none">
-                                        <button class="col-auto btn btn-xs btn-danger">
+                                    <a href="{{ path('app_deleteConstraint',{id: teacher.id, idConstraint: key }) }}" class="btn btn-xs btn-danger text-decoration-none">
                                         Esborrar
-                                        </button>
                                     </a>
                                 </div>                                    
+                                {% endif %}
                             </div>
                         </li>
                     {% endfor %}

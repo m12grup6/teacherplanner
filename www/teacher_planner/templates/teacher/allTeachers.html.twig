@@ -13,6 +13,7 @@
                     </h4>
 
                 </div>
+                {% if 'ROLE_ADMIN' in app.user.getRoles %}
                 <div class="col-auto">
 
                     <!-- Button -->
@@ -21,6 +22,7 @@
                     </button>
 
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="card-body">
@@ -32,6 +34,8 @@
                             <div class="row align-items-center text-secondary">
                                 <div class="col-auto">{{ teacher.id }}</div>
                                 <div class="col">{{ teacher.name }}</div>
+                
+                                {% if 'ROLE_ADMIN' in app.user.getRoles %}
                                 <div class="col-auto">
                                     <a href="{{ path('app_detailTeacher', {id: teacher.id}) }}" class="text-decoration-none">
                                         <button class="col-auto btn btn-xs btn-info">
@@ -53,6 +57,8 @@
                                         </button>
                                     </a>
                                 </div>     
+                                {% endif %}
+
                             </div>
                         </li>
                     {% endif %}
