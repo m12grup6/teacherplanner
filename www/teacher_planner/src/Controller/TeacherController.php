@@ -40,7 +40,7 @@ class TeacherController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $roles = $form['roles']->getData();
-            if($roles[0] == 'ROLE_ADMIN') {
+            if ($roles[0] == 'ROLE_ADMIN') {
                 $roles[] = 'ROLE_USER';
             }
             $em = $this->getDoctrine()->getManager();
@@ -119,7 +119,7 @@ class TeacherController extends AbstractController
         }
 
         return $this->render(
-            'teacher/add.html.twig', 
+            'teacher/add.html.twig',
             [
                 'form' => $form->createView(),
                 'edit' => true
@@ -135,10 +135,15 @@ class TeacherController extends AbstractController
      */
     public function detailTeacher(User $teacher): Response
     {
-        return $this->render(
-            'teacher/detail.html.twig',
-            ['teacher' => $teacher]
-        );
+        $loggedUser = $this->get('security.token_storage')->getToken()->getUser();
+        if (!in_array('ROLE_ADMIN', $loggedUser->getRoles()) && $loggedUser->getId() != $teacher->getId()) {
+            return $this->redirectToRoute('app_detailTeacher', array('id' => $loggedUser->getId()));
+        } else {
+            return $this->render(
+                'teacher/detail.html.twig',
+                ['teacher' => $teacher]
+            );
+        }
     }
 
 
@@ -158,7 +163,7 @@ class TeacherController extends AbstractController
             if ($form->get('hora_fi')->getData() instanceof \Datetime) {
                 $horaFi = $form->get('hora_fi')->getData()->format('H:i:s');
             }
-            
+
             if (is_array($teacher->getTeacherConstraints())) {
                 $newConstraint = $teacher->getTeacherConstraints();
             } else {
@@ -169,7 +174,7 @@ class TeacherController extends AbstractController
                 'hora_inici' => $horaInici,
                 'hora_fi' => $horaFi
             );
-            
+
             $teacher->setTeacherConstraints($newConstraint);
 
             $this->entityManager->flush();
