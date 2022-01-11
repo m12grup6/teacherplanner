@@ -34,8 +34,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Display & process form to request a password reset.
-     *
+     * Mostra i processa el formulari de petició reset de contrasenya
      * @Route("", name="app_forgot_password_request")
      */
     public function request(Request $request, MailerInterface $mailer): Response
@@ -57,8 +56,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Confirmation page after a user has requested a password reset.
-     *
+     * Confirmació de la pàgina després de que un usuari hagi demanat reset de password
      * @Route("/check-email", name="app_check_email")
      */
     public function checkEmail(): Response
@@ -75,8 +73,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Validates and process the reset URL that the user clicked in their email.
-     *
+     * Valida i processa el reset de la URL que ha arribat des del email
      * @Route("/reset/{token}", name="app_reset_password")
      */
     public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, string $token = null): Response
