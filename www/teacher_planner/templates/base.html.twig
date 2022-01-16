@@ -15,7 +15,7 @@
     </head>
     <body class="bg-light">
 
-
+    {% set route_name = app.request.attributes.get('_route') %}
     <nav class="navbar navbar-light navbar-expand-lg px-5 bg-white" style="z-index: 1;">
         <div class="container-md">
             <a class="navbar-brand text-primary fw-bold" href="/">
@@ -27,17 +27,17 @@
 
             <ul class="navbar-nav ms-auto text-secondary">
                 <li class="nav-item">
-                <a class="nav-link" id="navbarCursos" href="{{ path('app_getCourses') }}">
+                <a class="nav-link {% if route_name == "app_getCourses" %}active{% endif %}" id="navbarCursos" href="{{ path('app_getCourses') }}">
                     Cursos
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" id="navbarDocents"  href="{{ path('app_getTeachers') }}" >
+                <a class="nav-link {% if route_name == "app_getTeachers" %}active{% endif %}" id="navbarDocents"  href="{{ path('app_getTeachers') }}" >
                     Docents
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" id="navbarHorari"  href="{{ path('app_showSchedule') }}" >
+                <a class="nav-link {% if route_name == "app_showSchedule" %}active{% endif %}" id="navbarHorari"  href="{{ path('app_showSchedule') }}" >
                     Horari
                 </a>
                 </li>
